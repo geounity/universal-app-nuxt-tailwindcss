@@ -28,6 +28,12 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [],
+  /**
+   * Router settings
+   */
+  router: {
+    middleware: ['authenticated']
+  },
   /*
    ** Nuxt.js dev-modules
    */

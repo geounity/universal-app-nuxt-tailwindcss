@@ -5,9 +5,17 @@ export const state = () => ({
   user: null
 })
 
+export const getters = {
+  auth: (state) => !!state.user && !!state.user.uid,
+  username: (state) => {
+    if (state.user && state.user.username) return state.user.username
+    else return null
+  }
+}
+
 export const mutations = {
-  SET_USER: (state, form) => {
-    state.user = form
+  SET_USER: (state, account) => {
+    state.user = account
   }
 }
 
@@ -27,7 +35,20 @@ export const actions = {
       throw error
     }
   },
-  register({ commit }, form) {
-    // Por ahora nada
+  async register({ commit }, form) {
+    try {
+      // Register the user
+      await auth.createUserWithEmailAndPassword(form.email, form.password)
+      // Get JWT from Firebase
+      const token = await auth.currentUser.getIdToken()
+      const { email, uid } = auth.currentUser
+      // Set JWT to the cookie
+      Cookie.set('access_token', token)
+      // Set the user locally
+      const { username } = form
+      commit('SET_USER', { username, email, uid })
+    } catch (error) {
+      throw error
+    }
   }
 }

@@ -1,3 +1,4 @@
 <template lang="pug">
-  h1 Page Communities
+  .container
+    h1 Page Communities
 </template>

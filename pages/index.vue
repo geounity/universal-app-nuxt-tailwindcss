@@ -1,8 +1,8 @@
 <template lang="pug">
   .container
     div
-      h1.title Digital Moderation
-      h2.subtitle Debates between communities and peoples.
+      h1.text-4xl.font-black Digital Moderation
+      h2.text-base.font-hairline Debates between communities and peoples.
 </template>
 
 <script>

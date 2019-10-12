@@ -25,13 +25,14 @@
 
 <script>
 export default {
-  name: 'Login',
+  name: 'SignIn',
   data: () => ({
     form: {
       email: '',
       password: ''
     },
     error: false,
+    errorCode: '',
     errorMsg: ''
   }),
   methods: {
@@ -44,6 +45,7 @@ export default {
         })
         .catch((error) => {
           this.error = true
+          this.errorCode = error.code
           this.errorMsg = error.message
           setTimeout(() => {
             this.error = false

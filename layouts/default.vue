@@ -1,7 +1,8 @@
 <template lang="pug">
   #app
     Header
-    nuxt.min-h-screen
+    main.min-h-screen
+      nuxt
     Footer
     BottomNav
 </template>

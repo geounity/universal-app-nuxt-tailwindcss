@@ -6,7 +6,7 @@
 
 <script>
 import Cookie from 'js-cookie'
-import { auth } from '@/services/firebase'
+import { auth } from '~/plugins/firebase'
 
 export default {
   name: 'Profile',

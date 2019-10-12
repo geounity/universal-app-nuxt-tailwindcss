@@ -1,5 +1,5 @@
 import Cookie from 'js-cookie'
-import { auth, firestore } from '@/services/firebase'
+import { auth, firestore } from '~/plugins/firebase'
 import api from '~/services/apiMongo'
 
 export const state = () => ({

@@ -1,13 +1,21 @@
 <template lang="pug">
-  .container
-    div
-      h1.text-4xl.font-black Digital Moderation
-      h2.text-base.font-hairline Debates between communities and peoples.
+  .container.flex.flex-col
+    h1.text-4xl.font-black Moderación Digital
+    h2.text-base.font-hairline Debates entre comunidades y personas.
+    div(v-if="auth")
+      nuxt-link(to="/create/debate" tag="button").mt-5.bg-purple-500.text-white.font-bold.py-2.px-4.rounded.w-full Abrir un debate
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  name: 'Index'
+  name: 'Index',
+  data: () => ({}),
+  computed: {
+    ...mapGetters({
+      auth: 'users/auth'
+    })
+  }
 }
 </script>
 

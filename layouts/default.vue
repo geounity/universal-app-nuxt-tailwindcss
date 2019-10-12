@@ -1,7 +1,7 @@
 <template lang="pug">
-  div
+  #app
     Header
-    nuxt
+    nuxt.min-h-screen
     Footer
     BottomNav
 </template>

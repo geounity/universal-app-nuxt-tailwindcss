@@ -1,10 +1,13 @@
 module.exports = {
+  server: {
+    host: '0.0.0.0'
+  },
   mode: 'universal',
   /*
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Geounity',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

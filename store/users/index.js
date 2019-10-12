@@ -1,5 +1,6 @@
 import Cookie from 'js-cookie'
-import { auth } from '@/services/firebase'
+import { auth, firestore } from '@/services/firebase'
+import api from '~/services/apiMongo'
 
 export const state = () => ({
   user: null
@@ -26,11 +27,11 @@ export const actions = {
       await auth.signInWithEmailAndPassword(form.email, form.password)
       // Get JWT from Firebase
       const token = await auth.currentUser.getIdToken()
-      const { email, uid } = auth.currentUser
+      const { email, uid, displayName } = auth.currentUser
       // Set JWT to the cookie
       Cookie.set('access_token', token)
       // Set the user locally
-      commit('SET_USER', { email, uid })
+      commit('SET_USER', { email, uid, username: displayName })
     } catch (error) {
       throw error
     }
@@ -39,14 +40,25 @@ export const actions = {
     try {
       // Register the user
       await auth.createUserWithEmailAndPassword(form.email, form.password)
+      const user = auth.currentUser
+      if (user) {
+        user.updateProfile({
+          displayName: form.username
+        })
+      }
       // Get JWT from Firebase
       const token = await auth.currentUser.getIdToken()
-      const { email, uid } = auth.currentUser
       // Set JWT to the cookie
       Cookie.set('access_token', token)
       // Set the user locally
-      const { username } = form
-      commit('SET_USER', { username, email, uid })
+      const newUser = {
+        username: form.username,
+        email: auth.currentUser.email,
+        uid: auth.currentUser.uid
+      }
+      const doc = await firestore.collection('users').add(newUser)
+      await api.post('/user', { ...newUser, id_doc_firestore: doc.id })
+      commit('SET_USER', newUser)
     } catch (error) {
       throw error
     }

@@ -58,6 +58,7 @@
 import api from '~/services/apiMongo'
 export default {
   name: 'CreateDebate',
+  middleware: 'authenticated',
   data: () => ({
     continents: ['Africa', 'Asia', 'Americas', 'Europa', 'Oceania'],
     countries: [],

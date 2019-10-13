@@ -2,7 +2,7 @@
   .container.flex.flex-col
     h1.text-4xl.font-black Moderación Digital
     h2.text-base.font-hairline Debates entre comunidades y personas.
-    div(v-if="auth")
+    div(v-if="isAuth")
       nuxt-link(to="/create/debate" tag="button").mt-5.bg-purple-500.text-white.font-bold.py-2.px-4.rounded.w-full Abrir un debate
 </template>
 
@@ -13,7 +13,7 @@ export default {
   data: () => ({}),
   computed: {
     ...mapGetters({
-      auth: 'users/auth'
+      isAuth: 'users/isAuth'
     })
   }
 }

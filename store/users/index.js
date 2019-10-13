@@ -7,7 +7,7 @@ export const state = () => ({
 })
 
 export const getters = {
-  auth: (state) => !!state.user && !!state.user.uid,
+  isAuth: (state) => !!state.user && !!state.user.uid,
   username: (state) => {
     if (state.user && state.user.username) return state.user.username
     else return null
@@ -26,7 +26,7 @@ export const actions = {
       // Login the user
       await auth.signInWithEmailAndPassword(form.email, form.password)
       // Get JWT from Firebase
-      const token = await auth.currentUser.getIdToken()
+      const token = await auth.currentUser.getIdToken(true)
       const { email, uid, displayName } = auth.currentUser
       // Set JWT to the cookie
       Cookie.set('access_token', token)
@@ -47,7 +47,7 @@ export const actions = {
         })
       }
       // Get JWT from Firebase
-      const token = await auth.currentUser.getIdToken()
+      const token = await auth.currentUser.getIdToken(true)
       // Set JWT to the cookie
       Cookie.set('access_token', token)
       // Set the user locally
@@ -62,5 +62,8 @@ export const actions = {
     } catch (error) {
       throw error
     }
+  },
+  set_user({ commit }, user) {
+    commit('SET_USER', user)
   }
 }

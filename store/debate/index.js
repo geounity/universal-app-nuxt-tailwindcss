@@ -1,7 +1,8 @@
 import api from '~/services/apiMongo'
 
 export const state = () => ({
-  debate: null
+  debate: null,
+  debates: []
 })
 
 export const mutations = {
@@ -11,9 +12,18 @@ export const mutations = {
 }
 
 export const actions = {
-  async open_debate({ commit }, form) {
+  async get_debates({ commit }) {
+    try {
+      const debates = await api.get('/debate')
+      commit('SET_DEBATES', debates)
+    } catch (error) {
+      throw error
+    }
+  },
+  async open_debate({ commit, rootGetters }, form) {
+    const idUser = rootGetters['users/idPostgres']
     const payload = {
-      idUser: '1',
+      idUser,
       debate: {
         ...form,
         type: 'geopolitics' // bussines or ideologics
@@ -21,7 +31,7 @@ export const actions = {
     }
     try {
       await api.post('/debate', payload)
-      commit('SET_DEBATE', form)
+      commit('SET_DEBATE', payload)
     } catch (error) {
       throw error
     }

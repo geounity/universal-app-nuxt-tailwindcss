@@ -74,13 +74,13 @@ export default {
     form: {
       title: '',
       description: '',
-      uuid_geocommunity: ''
+      geopolitic_uuid: ''
     }
   }),
   // Para traer los continentes
   async mounted() {
     const uuid = await api.get('/geocommunities/global/uuid')
-    this.form.uuid_geocommunity = uuid.data.body
+    this.form.geopolitic_uuid = uuid.data.body
     const { data } = await api.get('/geocommunities/continents')
     this.continents = data.body.map((item) => {
       return {
@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     async selectedContinent(value) {
-      this.form.uuid_geocommunity = value.uuid
+      this.form.geopolitic_uuid = value.uuid
       const continent = value.label
       this.disabledCountries = false
       const { data } = await api.get(`/geocommunities/${continent}/countries`)
@@ -103,7 +103,7 @@ export default {
       })
     },
     async selectedCountry(value) {
-      this.form.uuid_geocommunity = value.uuid
+      this.form.geopolitic_uuid = value.uuid
       const country = value.label
       this.hiddenStates = false
       const { data } = await api.get(`/geocommunities/${country}/states`)
@@ -115,7 +115,7 @@ export default {
       })
     },
     selectedState(value) {
-      this.form.uuid_geocommunity = value.uuid
+      this.form.geopolitic_uuid = value.uuid
     },
     openDebate(e) {
       e.preventDefault()

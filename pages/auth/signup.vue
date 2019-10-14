@@ -23,7 +23,7 @@
           input#passwordconf.shadow.appearance-none.border.border-red-500.rounded.w-full.py-2.px-3.text-gray-700.mb-3.leading-tight(v-model="form.passwordconf" class='focus:outline-none focus:shadow-outline' type='password' placeholder='******************')
         .mb-6
           div(class="md:w-1/3")
-          label(class="md:w-2/3 block text-gray-500 font-bold")
+          label(class="block text-gray-500 font-bold")
             input.mr-2.leading-tight(type="checkbox")
             span.text-sm Acepto los terminos y condiciones.
         .mb-2

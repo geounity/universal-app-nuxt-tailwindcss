@@ -7,6 +7,10 @@ export const state = () => ({
 })
 
 export const getters = {
+  avatar: (state) => {
+    if (state.user && state.user.photoURL) return state.user.photoURL
+    else return null
+  },
   idPostgres: (state) => {
     if (state.user && state.user.id_postgres) return state.user.id_postgres
     else return null

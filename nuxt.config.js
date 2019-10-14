@@ -49,7 +49,7 @@ module.exports = {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/pwa'],
+  modules: ['@nuxtjs/pwa', 'nuxt-vue-select'],
   /*
    ** Build configuration
    */

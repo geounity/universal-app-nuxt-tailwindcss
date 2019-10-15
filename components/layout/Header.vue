@@ -10,9 +10,11 @@
           nuxt-link(to="/aims" class="block mt-4 md:inline-block md:mt-0 md:text-white hover:text-white mr-4") Propuestas
           nuxt-link(to="/communities" class="block mt-4 md:inline-block md:mt-0 md:text-white hover:text-white mr-4") Comunidades
         div(v-if="isAuth").inline-block.relative
-          select(@change="logout" class="focus:outline-none" style="text-align-last:right").bg-transparent.border.border-purple-700.px-2.rounded.font-bold
-            option(value="1"): nuxt-link(to="/user/profile") {{ username }}
-            option(value="2") Cerrar sesión
+          button(@click="showMenuUser=!showMenuUser" class="focus:outline-none focus:border-white").block.h-8.w-8.rounded-full.overflow-hidden.border-2.border-gray-500
+            img(:src="avatar?avatar:'/sinfoto.png'" alt="Mi foto de perfil").h-full.w-full.object-cover
+          div(v-show="showMenuUser").mt-2.py-2.w-48.bg-white.rounded-lg.shadow-xl.absolute.right-0
+            nuxt-link(to="/user/profile" class="hover:bg-indigo-500 hover:text-white").block.px-4.py-2.text-gray-800 {{ username }}
+            a(href="#" @click="logout" class="hover:bg-indigo-500 hover:text-white").block.px-4.py-2.text-gray-800 Cerrar sesión
         div(v-else)
           nuxt-link(to="/auth/signin" class="inline-block text-sm px-2 sm: py-2 ml-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white md:mt-0") Iniciar sesión
           nuxt-link(to="/auth/signup" class="inline-block text-sm px-2 sm: py-2 ml-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white md:mt-0") Registrarse
@@ -25,8 +27,12 @@ import { auth } from '~/plugins/firebase'
 
 export default {
   name: 'Header',
+  data: () => ({
+    showMenuUser: false
+  }),
   computed: {
     ...mapGetters({
+      avatar: 'users/avatar',
       isAuth: 'users/isAuth',
       username: 'users/username'
     })

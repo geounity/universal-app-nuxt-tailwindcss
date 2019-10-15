@@ -1,5 +1,5 @@
 <template lang="pug">
-  .container
+  .container.bg-gray-500
     .w-full.max-w-xs
       form.bg-white.shadow-md.rounded.px-8.pt-6.pb-8.mb-4
         .mb-4
@@ -55,3 +55,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.container {
+  min-width: 100vw;
+}
+</style>

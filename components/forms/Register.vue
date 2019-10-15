@@ -1,5 +1,5 @@
 <template lang="pug">
-  .w-full.max-w-sm
+  .w-full.max-w-sm.text-center
     form.bg-white.shadow-lg.rounded.px-8.py-4.mt-3
       h2.text-2xl.font-bold Registrate en segundos
       .mb-4
@@ -24,11 +24,10 @@
           span.text-sm Acepto los terminos y condiciones.
       .mb-2
         button(@click="register" class='hover:bg-teal-600 focus:outline-none focus:shadow-outline' type='button').py-2.px-4.bg-teal-500.text-gray-100.font-bold.border-teal-600.rounded.w-full
-          | Registrarse
-      .items-center
-        nuxt-link.inline-block.align-baseline.font-bold.text-sm.text-purple-500.w-full(to="/login" class='hover:text-purple-800' href='#')
-          | ¿Ya tienes un usuario? Inicia sesión
-    p.text-center.text-gray-500.text-xs
+          | Crear tu usuario
+      nuxt-link.inline-block.align-baseline.font-bold.text-sm.text-purple-500.w-full(to="/login" class='hover:text-purple-800' href='#')
+        | ¿Ya tienes un usuario? Inicia sesión
+    p.text-center.text-gray-100.text-xs
       | &copy;2019 Geounity Organization. All rights reserved.
 </template>
 

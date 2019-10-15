@@ -1,5 +1,5 @@
 <template lang="pug">
-  .container
+  .container.bg-gray-500
     FormRegister
 </template>
 
@@ -10,3 +10,9 @@ export default {
   components: { FormRegister }
 }
 </script>
+
+<style>
+.container {
+  min-width: 100vw;
+}
+</style>

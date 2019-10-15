@@ -1,5 +1,5 @@
 import Cookie from 'js-cookie'
-import { auth, firestore } from '~/plugins/firebase'
+import { auth, firestore, storage } from '~/plugins/firebase'
 import api from '~/services/apiMongo'
 
 export const state = () => ({
@@ -23,12 +23,22 @@ export const getters = {
 }
 
 export const mutations = {
+  ADD_PHOTO: (state, photo) => {
+    state.user.photoURL = photo
+  },
+  DELETE_IMAGE: (state) => {
+    state.user.photoURL = ''
+  },
   SET_USER: (state, account) => {
     state.user = account
   }
 }
 
 export const actions = {
+  delete_image({ commit }, fileName) {
+    storage.ref('images/' + fileName).delete()
+    commit('DELETE_IMAGE')
+  },
   async login({ commit }, form) {
     try {
       // Login the user

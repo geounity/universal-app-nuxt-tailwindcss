@@ -9,3 +9,15 @@
     div(v-else)
       nuxt-link(to="/create/aim" tag="button").mt-5.bg-purple-500.text-white.font-bold.py-2.px-4.rounded.w-full Proponer una solución
 </template>
+
+<script>
+import { mapGetters } from 'vuex'
+export default {
+  name: 'Debates',
+  computed: {
+    ...mapGetters({
+      isAuth: 'users/isAuth'
+    })
+  }
+}
+</script>

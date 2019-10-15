@@ -11,7 +11,7 @@
           nuxt-link(to="/communities" class="block mt-4 md:inline-block md:mt-0 md:text-white hover:text-white mr-4") Comunidades
         div(v-if="isAuth").inline-block.relative
           select(@change="logout" class="focus:outline-none" style="text-align-last:right").bg-transparent.border.border-purple-700.px-2.rounded.font-bold
-            option(value="1") {{ username }}
+            option(value="1"): nuxt-link(to="/user/profile") {{ username }}
             option(value="2") Cerrar sesión
         div(v-else)
           nuxt-link(to="/auth/signin" class="inline-block text-sm px-2 sm: py-2 ml-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white md:mt-0") Iniciar sesión

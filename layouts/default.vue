@@ -1,5 +1,5 @@
 <template lang="pug">
-  #app
+  #app(class="bg-gray-100")
     Header
     main.min-h-screen
       nuxt

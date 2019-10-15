@@ -45,11 +45,11 @@ export const actions = {
       await auth.signInWithEmailAndPassword(form.email, form.password)
       // Get JWT from Firebase
       const token = await auth.currentUser.getIdToken(true)
-      const { email, uid, displayName } = auth.currentUser
+      const { email, uid, displayName, photoURL } = auth.currentUser
       // Set JWT to the cookie
       Cookie.set('access_token', token)
       // Set the user locally
-      commit('SET_USER', { email, uid, username: displayName })
+      commit('SET_USER', { email, uid, photoURL, username: displayName })
     } catch (error) {
       throw error
     }
@@ -87,5 +87,23 @@ export const actions = {
   },
   set_user({ commit }, user) {
     commit('SET_USER', user)
+  },
+  async update_info_user({ state, commit, getters }, userInfo) {
+    try {
+      await api.patch('/user', {
+        username: getters.username,
+        payload: userInfo
+      })
+      const user = auth.currentUser
+      if (user) {
+        user.updateProfile({
+          photoURL: state.user.photoURL
+        })
+        console.log('foto actualizada', user.photoURL)
+      }
+      commit('SET_USER', { ...state.user, ...userInfo })
+    } catch (error) {
+      throw error
+    }
   }
 }

@@ -15,8 +15,9 @@
       label(for="lastname").block.text-gray-700.text-sm.font-bold.mt-4 Apellido
         input(v-model="formInfo.lastname" id="lastname" placeholder="Ingresa tu apellido" class="focus:outline-none focus:shadow-outline" type="text").text-center.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight
       label(for="service").block.text-gray-700.text-sm.font-bold.mt-4 Cuentanos que servicio brindas a tu comunidad
-        input(v-model="formInfo.lastname" id="service" placeholder="Servicio" class="focus:outline-none focus:shadow-outline" type="text").text-center.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight
+        input(v-model="formInfo.service" id="service" placeholder="Servicio" class="focus:outline-none focus:shadow-outline" type="text").text-center.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight
       span.text-xs.text-gray-600.font-hairline.italic.text-left Puede ser tu empleo, lo que aprendes, lo que vendes o lo que estas construyendo.
+      button(@click="updateInfoUser" class='hover:bg-teal-600 focus:outline-none focus:shadow-outline' type='button').mt-4.py-2.px-4.bg-teal-500.text-gray-100.font-bold.border-teal-600.rounded.w-full Actualizar mis datos
     
 </template>
 
@@ -26,6 +27,7 @@ import { storage } from '~/plugins/firebase'
 
 export default {
   name: 'Profile',
+  middleware: ['authenticated'],
   data: () => ({
     formInfo: {
       datebirth: '',
@@ -80,11 +82,15 @@ export default {
       const filename = this.username + 'Profile'
       this.formInfo.fileName = filename
       this.uploadTask = storage.ref('images/' + filename).put(file)
+      this.loading = false
     },
     deleteImage() {
       this.loading = true
       this.$store.dispatch('users/delete_image', this.formInfo.fileName)
       this.loading = false
+    },
+    updateInfoUser() {
+      this.$store.dispatch('users/update_info_user', this.formInfo)
     }
   }
 }

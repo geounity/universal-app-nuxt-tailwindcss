@@ -75,12 +75,11 @@ export const actions = {
         uid: auth.currentUser.uid
       }
       const doc = await firestore.collection('users').add(newUser)
-      const userPG = await api.post('/user', {
+      await api.post('/user', {
         ...newUser,
         id_doc_firestore: doc.id
       })
-      const idPostgres = userPG.data.body.id
-      commit('SET_USER', { ...newUser, id_postgres: idPostgres })
+      commit('SET_USER', newUser)
     } catch (error) {
       throw error
     }
@@ -99,7 +98,6 @@ export const actions = {
         user.updateProfile({
           photoURL: state.user.photoURL
         })
-        console.log('foto actualizada', user.photoURL)
       }
       commit('SET_USER', { ...state.user, ...userInfo })
     } catch (error) {

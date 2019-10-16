@@ -90,7 +90,9 @@ export default {
       this.loading = false
     },
     updateInfoUser() {
-      this.$store.dispatch('users/update_info_user', this.formInfo)
+      this.$store.dispatch('users/update_info_user', this.formInfo).then(() => {
+        this.$router.push('/')
+      })
     }
   }
 }

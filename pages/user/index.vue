@@ -1,3 +1,14 @@
 <template lang="pug">
-  h1 Admin route
+  .container
+    h1 Redirigiendo
 </template>
+
+<<script>
+export default {
+  name: 'UserIndex',
+  middleware: ['authenticated'],
+  beforeMount() {
+    this.$router.push('/user/profile')
+  }
+}
+</script>

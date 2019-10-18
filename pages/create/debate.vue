@@ -1,9 +1,9 @@
 <template lang="pug">
   main
-    h1.text-3xl.font-bold.text-center.mt-6 Abrir un debate
+    h1.text-4xl.font-bold.text-center.mt-6 Abrir un debate
     form.max-w-3xl.px-2.mx-auto
       .mt-4
-        label.block.text-gray-700.text-md.font-bold.mb-2(for="title") Título
+        label.block.text-gray-700.text-md.font-bold.mb-1(for="title") Título
         input.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
           class="focus:outline-none focus:shadow-outline"
           id="title"
@@ -12,7 +12,7 @@
           placeholder="Título del debate"
         )
       .mt-4
-        label.block.text-gray-700.text-md.font-bold.mb-2(for="description") Descripción
+        label.block.text-gray-700.text-md.font-bold.mb-1(for="description") Descripción
         textarea.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight.h-20(
           class="focus:outline-none focus:shadow-outline"
           id="description"
@@ -20,8 +20,14 @@
           type="text"
           placeholder="Una descripción del problema. Se objetivo. Luego de abrir el debate podrás dar tu punto de vista."
         )
+      .mt-4
+        label.block.text-gray-700.text-md.font-bold.mb-1(for="file") Imagenes
+        button(type="button" @click.prevent="selectFile").inline-block.bg-blue-500.rounded.text-sm.text-white.font-bold.px-4.py-2.mr-2 Agregar imagen
+        p.inline-block.text-gray-600 Los usuarios comunes solo pueden agregar una imagen.
+        input(id="file" type="file" name="file" :multiple="false" ref="uploadInput" accept="image/*" @change="detectFile($event)").invisible
       .mt-4.flex.flex-wrap
-        label.w-full.block.text-gray-700.text-md.font-bold.mb-2(for="description") Comunidad que participará
+        label.w-full.block.text-gray-700.text-md.font-bold.mb-1(for="description") Comunidad que participará
+        p.w-full.inline-block.text-gray-600.my-1 Puede seleccionar las subcomunidades que desee.
         //- Continents
         div(class="w-1/2 md:w-1/3 lg:w-1/4").px-2
           label.block.text-gray-700.text-sm.font-bold.mb-1(for="description") Continentes
@@ -56,12 +62,41 @@
             @input="selectedState"
           )
             //- option(v-for="state in states" :key="state") {{state}}
-      .mt-4
-        button(type="submit" @click="openDebate").mt-5.bg-teal-500.text-white.font-bold.py-2.px-4.rounded.w-full Abrir debate
+      .mt-8.flex.flex-wrap
+        label.w-full.block.text-gray-700.text-md.font-bold.mb-1 Caracteres permitidos
+        div(class="w-1/2 md:w-1/3").px-2
+          label.block.text-gray-700.text-sm.font-bold.mb-1(for="min") Mínimo
+          input.shadow.appearance-none.w-32.border.rounded.py-2.px-3.text-gray-700.leading-tight(
+            class="focus:outline-none focus:shadow-outline"
+            id="min"
+            v-model="form.char_min"
+            type="number"
+          )
+        div(class="w-1/2 md:w-1/3").px-2
+          label.block.text-gray-700.text-sm.font-bold.mb-1(for="max") Máximo
+          input.shadow.appearance-none.w-32.border.rounded.py-2.px-3.text-gray-700.leading-tight(
+            class="focus:outline-none focus:shadow-outline"
+            id="max"
+            v-model="form.char_max"
+            type="number"
+          )
+        p.inline-block.text-gray-600.mt-1 Es la cantidad de caracteres que cada usuario podrá usar para opinar.
+      .mt-4.flex.flex-col.justify-between.h-16
+        strong {{form.public?'Publico':'Privado'}}
+        span(v-if="form.public" @click="form.public=!form.public").border.rounded-full.border-grey.flex.items-center.cursor-pointer.w-12.bg-green-600.justify-end
+          span.rounded-full.border.w-6.h-6.border-grey.shadow-inner.bg-white.shadow          
+        span(v-else @click="form.public=!form.public").border.rounded-full.border-grey.flex.items-center.cursor-pointer.w-12.justify-start
+          span.rounded-full.border.w-6.h-6.border-grey.shadow-inner.bg-white.shadow
+        p.inline-block.text-gray-600.mt-1 Los debates públicos serán visto por todos los usuarios dentro de la comundiad.
+        p.inline-block.text-gray-600.mt-1 Los debates privados serán visto por un subconjunto seleccionado dentro de la comunidad.
+
+      .mt-12
+        button(type="submit" @click="openDebate" class="hover:bg-teal-600").mt-5.bg-teal-500.text-white.font-bold.py-2.px-4.rounded.w-full Abrir debate
 </template>
 
 <script>
 import api from '~/services/apiMongo'
+import { storage } from '~/plugins/firebase'
 export default {
   name: 'CreateDebate',
   middleware: 'authenticated',
@@ -74,8 +109,16 @@ export default {
     form: {
       title: '',
       description: '',
-      geopolitic_uuid: ''
-    }
+      fileName: [],
+      geopolitic_uuid: '',
+      char_min: 2,
+      char_max: 300,
+      public: true
+    },
+    error: '',
+    loading: false,
+    progressUpload: 0,
+    uploadTask: ''
   }),
   // Para traer los continentes
   async mounted() {
@@ -90,6 +133,26 @@ export default {
     })
   },
   methods: {
+    selectFile() {
+      this.$refs.uploadInput.click()
+    },
+    detectFile(event) {
+      const fileList = event.target.files || event.dataTransfer.files
+      Array.from(Array(fileList.length).keys()).map((x) => {
+        this.upload(fileList[x])
+      })
+    },
+    upload(file) {
+      this.loading = true
+      const filename = this.form.title + this.$store.getters['users/username']
+      this.uploadTask = storage.ref('images/debates/' + filename).put(file)
+    },
+    deleteImage() {
+      this.loading = true
+      // this.$store.dispatch('users/delete_image', this.formInfo.fileName)
+      this.loading = false
+    },
+
     async selectedContinent(value) {
       this.form.geopolitic_uuid = value.uuid
       const continent = value.label
@@ -120,6 +183,27 @@ export default {
     openDebate(e) {
       e.preventDefault()
       this.$store.dispatch('debate/open_debate', this.form)
+    }
+  },
+
+  watch: {
+    uploadTask() {
+      this.uploadTask.on(
+        'state_changed',
+        (sp) => {
+          this.progressUpload = Math.floor(
+            (sp.bytesTransferred / sp.totalBytes) * 100
+          )
+        },
+        (error) => (this.error = 'Error al cargar la imagen: ' + error),
+        () => {
+          this.uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            this.form.fileName[0] = downloadURL
+            // this.$store.commit('users/ADD_PHOTO', downloadURL)-
+            this.loading = false
+          })
+        }
+      )
     }
   }
 }

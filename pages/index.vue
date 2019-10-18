@@ -2,14 +2,14 @@
   #pageIndex
     section(v-if="!isAuth" class="md:flex-row md:justify-around md:items-center md:text-left").presentation.w-full.py-5.flex.flex-col.items-center.text-center
       div.text-white
-        h1(class="md:text-4xl lg:text-5xl xl:text-6xl").text-3xl.font-black Moderación Digital
+        h1(class="md:text-4xl lg:text-5xl xl:text-6xl").text-3xl.font-black Mediación Digital
         h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.py-2 Debates entre comunidades y personas. <br/> Comparte tu visión del mundo con todos. <br/> Un lugar para tu perspectiva única. 
       FormRegister
     .container(v-else class="md:flex-row")
       section
         div(v-if="isAuth")
           h3.text-md Bienvenido
-          nuxt-link(to="/create/debate" tag="button").mt-5.bg-purple-500.text-white.font-bold.py-2.px-4.rounded.w-full Abrir un debate
+          nuxt-link(to="/create/debate" tag="button" class="hover:bg-purple-600").mt-5.bg-purple-500.text-white.font-bold.py-2.px-4.rounded.w-full Abrir un debate
 </template>
 
 <script>

@@ -6,6 +6,9 @@ export const state = () => ({
 })
 
 export const mutations = {
+  SET_DEBATE: (state, debate) => {
+    state.debates = debate
+  },
   SET_DEBATES: (state, debates) => {
     state.debates = debates
   }
@@ -15,16 +18,9 @@ export const actions = {
   async get_debates({ commit }) {
     try {
       const { data } = await api.get('/debate')
-      const debates = data.body.map((item) => {
-        return {
-          ...item,
-          author: {
-            username: 'pepito',
-            photoURL:
-              'https://firebasestorage.googleapis.com/v0/b/geounity.appspot.com/o/images%2FsebaProfile?alt=media&token=db998bf3-eae7-499c-ace0-1b2d5c6da27b'
-          }
-        }
-      })
+      const debates = data.body
+      // const dataUser = api.get(`/user/${item.userId}`)
+      // const user = dataUser.data.body
       commit('SET_DEBATES', debates)
     } catch (error) {
       throw error
@@ -34,11 +30,14 @@ export const actions = {
     const username = rootGetters['users/username']
     const payload = {
       username,
+      community: form.geopolitic_uuid,
       debate: {
         ...form,
+        images: form.fileName,
         type: 'geopolitics' // bussines or ideologics
       }
     }
+    console.log('PAyload: ', payload)
     try {
       await api.post('/debate', payload)
       commit('SET_DEBATE', payload)

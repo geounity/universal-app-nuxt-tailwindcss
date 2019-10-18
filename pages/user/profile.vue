@@ -3,7 +3,7 @@
     h1.text-5xl.font-black {{ username }}
     form.flex.flex-col.px-4
       figure
-        img(:src="avatar?avatar:'/sinfoto.png'" class="avatar" style="border-radius:50%").mx-auto
+        img(:src="avatar?avatar:'/sinfoto.png'" @click.prevent="selectFile" class="avatar" style="border-radius:50%").mx-auto
       h3.text-lg.text-red-600 {{ error }}
       button(v-if="!loading" @click.prevent="selectFile").mt-5.bg-purple-500.text-white.font-bold.py-2.px-4.rounded Subir foto
       input(id="file" type="file" name="file" :multiple="false" ref="uploadInput" accept="image/*" @change="detectFile($event)").invisible
@@ -60,8 +60,9 @@ export default {
         (error) => (this.error = 'Error al cargar la imagen: ' + error),
         () => {
           this.uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            this.loading = false
+            this.formInfo.fileName = downloadURL
             this.$store.commit('users/ADD_PHOTO', downloadURL)
+            this.loading = false
           })
         }
       )
@@ -79,10 +80,8 @@ export default {
     },
     upload(file) {
       this.loading = true
-      const filename = this.username + 'Profile'
-      this.formInfo.fileName = filename
-      this.uploadTask = storage.ref('images/' + filename).put(file)
-      this.loading = false
+      const filename = this.username
+      this.uploadTask = storage.ref('images/profiles/' + filename).put(file)
     },
     deleteImage() {
       this.loading = true

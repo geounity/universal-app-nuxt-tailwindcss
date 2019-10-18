@@ -7,18 +7,19 @@
           svg.fill-current.text-gray-500.w-5.h-5.mr-2(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 20 20')
             path(d='M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z')
           | {{ public?'Publico':'Privado' }}
-        .text-gray-900.font-bold.text-xl.my-2 {{ title }}
-        p.text-gray-700.text-base
-          | {{ description }}
+        nuxt-link(:to="`/${id}`").text-gray-900.font-bold.text-xl.my-2 {{ title }}
+        nuxt-link(:to="`/${id}`")
+          p.text-gray-700.text-base
+            | {{ description }}
       .flex.flex-wrap.items-center.justify-between
         div.flex.items-center(class="w-1/2 lg:w-1/3")
-          img.w-10.h-10.rounded-full.mr-4(:src="author.photoURL?author.photoURL:'/sinfoto.png'" alt='Avatar of Jonathan Reinink')
+          img.w-10.h-10.rounded-full.mr-4(:src="author.photo?author.photo:'/sinfoto.png'" alt='Avatar of Jonathan Reinink')
           .text-sm
             p.text-gray-900.leading-none {{ author.username }}
             p.text-gray-600 {{ date }}
         .text-md.text-center(class="w-1/2 lg:w-1/3")
           p Comunidad:
-          p: strong {{ community }}
+          p: strong {{ geopoliticName }}
         .text-sm.text-center.mt-4(class="w-full lg:w-1/3 lg:mt-0 lg:text-left")
           p
             span Caracteres mínimos permitidos:
@@ -34,6 +35,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'CardDebate',
   props: {
+    id: { type: Number, required: false },
     public: { type: Boolean, default: true },
     title: { type: String, required: true },
     description: { type: String, required: false, default: '' },
@@ -48,7 +50,10 @@ export default {
     ...mapGetters({
       avatar: 'users/avatar',
       username: 'users/username'
-    })
+    }),
+    geopoliticName() {
+      return 'Buenos Aires'
+    }
   }
 }
 </script>

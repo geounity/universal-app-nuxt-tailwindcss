@@ -14,13 +14,13 @@
         label.block.text-gray-700.text-sm.font-bold.mb-1(for='password')
           | Contraseña
         input#password.shadow.appearance-none.border.border.rounded.w-full.py-2.px-3.text-gray-700.mb-3.leading-tight(v-model="form.password" class='focus:outline-none focus:shadow-outline' type='password' placeholder='******************')
-      .mb-6
+      .mb-4
         label(class="block text-gray-500 font-bold").text-left
           input.mr-2.leading-tight(type="checkbox" v-model="form.checkbox")
           span.text-sm Acepto los terminos y condiciones.
-      .absolute(v-if="error")
-        p.text-red-600.text-xs.italic.text-md.relative.error
-          b {{ errorMsg }}
+      .mb-4.bg-red-300.border-l-4.border-red-700.text-red-800.text-left.p-4(v-if="error" role="alert")
+        p.font-bold.text-sm {{ errorMsg }}
+        p {{ errorCode }}
       .mb-2
         button(@click="register" class='hover:bg-teal-600 focus:outline-none focus:shadow-outline' type='button').py-2.px-4.bg-teal-500.text-gray-100.font-bold.border-teal-600.rounded.w-full
           | Crear tu usuario
@@ -72,9 +72,3 @@ export default {
   }
 }
 </script>
-
-<<style>
-.error {
-  bottom: 24px;
-}
-</style>

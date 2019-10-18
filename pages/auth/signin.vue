@@ -2,7 +2,7 @@
   .container.bg-gray-500
     .w-full.max-w-md
       form.bg-white.shadow-md.rounded.px-6.pt-6.pb-8.mb-4
-        h2.text-2xl.font-bold Inicia sesión
+        h2.text-2xl.font-bold.text-center Inicia sesión
         .mb-4
           p.text-red-500.text-xs.italic(v-if="error")
             b {{ errorMsg }}

@@ -1,5 +1,5 @@
 <template lang="pug">
-  .max-w-5xl.w-full.mt-4(class='lg:flex')
+  .w-full.mt-4(class='lg:flex')
     .h-48.bg-cover.bg-center.rounded-t.text-center(class='lg:h-auto lg:w-48 lg:rounded-t-none lg:rounded-l' style="background-image: url('img/card.jpg')" title='Man fly')
     .border-r.border-b.border-l.border-gray-400.bg-white.rounded-b.p-2.leading-normal(class='lg:border-l-0 lg:border-t lg:rounded-b-none lg:rounded-r')
       .mb-4

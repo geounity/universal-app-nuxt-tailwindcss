@@ -23,11 +23,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { storage } from '~/plugins/firebase'
+import { storage } from '~/services/firebase'
 
 export default {
   name: 'Profile',
-  middleware: ['authenticated'],
   data: () => ({
     formInfo: {
       datebirth: '',

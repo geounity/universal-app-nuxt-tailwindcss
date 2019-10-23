@@ -96,7 +96,7 @@
 
 <script>
 import api from '~/services/apiMongo'
-import { storage } from '~/plugins/firebase'
+import { storage } from '~/services/firebase'
 export default {
   name: 'CreateDebate',
   middleware: 'authenticated',

@@ -1,10 +1,10 @@
 import { getUserFromCookie } from '~/helpers'
 
 export const actions = {
-  async nuxtServerInit({ dispatch }, { req }) {
+  async nuxtServerInit({ commit }, { req }) {
     const user = getUserFromCookie(req)
     if (user) {
-      await dispatch('users/set_user', {
+      await commit('users/SET_USER', {
         uid: user.user_id,
         email: user.email
       })

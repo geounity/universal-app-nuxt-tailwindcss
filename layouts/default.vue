@@ -11,7 +11,7 @@
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import BottomNav from '../components/layout/BottomNav'
-import { auth } from '~/plugins/firebase'
+import { auth } from '~/services/firebase'
 
 export default {
   name: 'Default',

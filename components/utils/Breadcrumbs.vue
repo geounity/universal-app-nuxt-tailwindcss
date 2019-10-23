@@ -1,6 +1,6 @@
 <template lang="pug">
   nav.bg-grey-light.rounded.font-sans.text-center.mt-3.w-full(class="sm:p-3 sm:m-4")
-    h3.text-xl.text-center.text-sm.mt-6 Ahora estas en :
+    h3.text-xl.text-center.text-sm.mt-6.mb-2(class="sm:text-left") Ahora estas en :
     ol.list-reset.text-grey-dark.text-md(class="sm:flex sm:text-md")
       li(v-for="(geopolitic, i) in geopolitics" :key="i")
         a.text-blue-700.text-xl(href='#'): span {{ geopolitic.name }}

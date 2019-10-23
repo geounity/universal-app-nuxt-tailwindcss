@@ -1,10 +1,11 @@
 import Cookie from 'js-cookie'
-import { Auth, auth, firestore, storage } from '~/plugins/firebase'
+import { Auth, auth, firestore, storage } from '~/services/firebase'
 import api from '~/services/apiMongo'
 auth.useDeviceLanguage()
 
 export const state = () => ({
-  user: null
+  user: null,
+  test: null
 })
 
 export const getters = {
@@ -32,6 +33,9 @@ export const mutations = {
   },
   SET_USER: (state, account) => {
     state.user = account
+  },
+  SET_TEST: (state, test) => {
+    state.test = test
   }
 }
 
@@ -41,6 +45,7 @@ export const actions = {
     auth
       .signInWithRedirect(provider)
       .then((res) => {
+        commit('SET_TEST', 'res')
         const token = res.credential.accessToken
         Cookie.set('access_token', token)
       })
@@ -104,9 +109,6 @@ export const actions = {
     } catch (error) {
       throw error
     }
-  },
-  set_user({ commit }, user) {
-    commit('SET_USER', user)
   },
   async update_info_user({ state, commit, getters }, userInfo) {
     try {

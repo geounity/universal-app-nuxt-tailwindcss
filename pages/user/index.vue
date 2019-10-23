@@ -6,7 +6,6 @@
 <<script>
 export default {
   name: 'UserIndex',
-  middleware: ['authenticated'],
   beforeMount() {
     this.$router.push('/user/profile')
   }

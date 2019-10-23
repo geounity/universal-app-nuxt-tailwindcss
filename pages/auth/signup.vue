@@ -7,6 +7,7 @@
 import FormRegister from '~/components/forms/Register'
 export default {
   name: 'SignUp',
+  middleware: ['authenticated'],
   components: { FormRegister }
 }
 </script>

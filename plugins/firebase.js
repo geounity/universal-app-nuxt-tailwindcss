@@ -1,14 +1,14 @@
-import firebase from 'firebase/app'
-import 'firebase/auth'
-import 'firebase/firestore'
-import 'firebase/storage'
-import config from '~/config'
+import { auth } from '~/services/firebase'
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(config.firebase)
+export default (context) => {
+  const { store } = context
+
+  return new Promise((resolve, reject) => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        return resolve(store.commit('users/SET_USER', user))
+      }
+      return resolve()
+    })
+  })
 }
-
-export const Auth = firebase.auth
-export const auth = firebase.auth()
-export const firestore = firebase.firestore()
-export const storage = firebase.storage()

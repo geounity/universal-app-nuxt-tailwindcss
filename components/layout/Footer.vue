@@ -1,4 +1,5 @@
 <template lang="pug">
-  footer.inset-x-0.bottom-0
-    span @2019
+  footer.mb-10.bg-red-900.flex.justify-between.text-white(class="sm:mb-0")
+    h6 mail@geounity.org
+    h6 copyright@2019
 </template>

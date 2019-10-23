@@ -8,6 +8,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(config.firebase)
 }
 
+export const Auth = firebase.auth
 export const auth = firebase.auth()
 export const firestore = firebase.firestore()
 export const storage = firebase.storage()

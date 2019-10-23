@@ -37,7 +37,6 @@ export const actions = {
         type: 'geopolitics' // bussines or ideologics
       }
     }
-    console.log('PAyload: ', payload)
     try {
       await api.post('/debate', payload)
       commit('SET_DEBATE', payload)

@@ -1,4 +1,11 @@
 <template lang="pug">
-  .container
-    h1.2xl Todavía no hay nada
+  Building
 </template>
+
+<script>
+import Building from '~/components/Building'
+export default {
+  name: 'CreateAim',
+  components: { Building }
+}
+</script>

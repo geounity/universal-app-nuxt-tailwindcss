@@ -1,6 +1,7 @@
 import Cookie from 'js-cookie'
-import { auth, firestore, storage } from '~/plugins/firebase'
+import { Auth, auth, firestore, storage } from '~/plugins/firebase'
 import api from '~/services/apiMongo'
+auth.useDeviceLanguage()
 
 export const state = () => ({
   user: null
@@ -35,6 +36,21 @@ export const mutations = {
 }
 
 export const actions = {
+  auth_google({ commit }) {
+    const provider = new Auth.GoogleAuthProvider()
+    auth
+      .signInWithRedirect(provider)
+      .then((res) => {
+        const token = res.credential.accessToken
+        Cookie.set('access_token', token)
+      })
+      .catch((error) => {
+        throw error
+      })
+  },
+  auth_facebook({ commit }) {
+    // -
+  },
   delete_image({ commit }, fileName) {
     storage.ref('images/' + fileName).delete()
     commit('DELETE_IMAGE')
@@ -53,6 +69,11 @@ export const actions = {
     } catch (error) {
       throw error
     }
+  },
+  async logout() {
+    auth.signOut()
+    await Cookie.remove('access_token')
+    location.href = '/'
   },
   async register({ commit }, form) {
     try {
@@ -99,6 +120,7 @@ export const actions = {
           photoURL: state.user.photoURL
         })
       }
+      // save in firestore
       commit('SET_USER', { ...state.user, ...userInfo })
     } catch (error) {
       throw error

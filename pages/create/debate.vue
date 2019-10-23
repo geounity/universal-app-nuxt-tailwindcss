@@ -120,6 +120,27 @@ export default {
     progressUpload: 0,
     uploadTask: ''
   }),
+
+  watch: {
+    uploadTask() {
+      this.uploadTask.on(
+        'state_changed',
+        (sp) => {
+          this.progressUpload = Math.floor(
+            (sp.bytesTransferred / sp.totalBytes) * 100
+          )
+        },
+        (error) => (this.error = 'Error al cargar la imagen: ' + error),
+        () => {
+          this.uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            this.form.fileName[0] = downloadURL
+            // this.$store.commit('users/ADD_PHOTO', downloadURL)-
+            this.loading = false
+          })
+        }
+      )
+    }
+  },
   // Para traer los continentes
   async mounted() {
     const uuid = await api.get('/geocommunities/global/uuid')
@@ -183,27 +204,6 @@ export default {
     openDebate(e) {
       e.preventDefault()
       this.$store.dispatch('debate/open_debate', this.form)
-    }
-  },
-
-  watch: {
-    uploadTask() {
-      this.uploadTask.on(
-        'state_changed',
-        (sp) => {
-          this.progressUpload = Math.floor(
-            (sp.bytesTransferred / sp.totalBytes) * 100
-          )
-        },
-        (error) => (this.error = 'Error al cargar la imagen: ' + error),
-        () => {
-          this.uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            this.form.fileName[0] = downloadURL
-            // this.$store.commit('users/ADD_PHOTO', downloadURL)-
-            this.loading = false
-          })
-        }
-      )
     }
   }
 }

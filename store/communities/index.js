@@ -63,49 +63,59 @@ export const mutations = {
 
 export const actions = {
   update_continent: ({ commit }, continent) => {
-    api
-      .get(`/geocommunities/${continent}/countries`)
-      .then((res) => {
-        const countries = res.data.body.map((item) => ({
-          label: item.name,
-          divisionName: item.division_name,
-          population: item.population,
-          uuid: item.uuid
-        }))
-        const payload = {
-          name: continent,
-          divisionName: 'Paises',
-          items: countries,
-          polls: [],
-          statics: [],
-          debates: [],
-          aims: []
-        }
-        commit('UPDATE_CONTINENT', payload)
-      })
-      .catch((e) => console.error(e))
+    api.get(`/geocommunities/${continent}/countries`).then((res) => {
+      const countries = res.data.body.map((item) => ({
+        label: item.name,
+        divisionName: item.division_name,
+        population: item.population,
+        uuid: item.uuid
+      }))
+      const payload = {
+        name: continent,
+        divisionName: 'Paises',
+        items: countries,
+        polls: [],
+        statics: [],
+        debates: [],
+        aims: []
+      }
+      commit('UPDATE_CONTINENT', payload)
+    })
   },
   update_country: ({ commit }, country) => {
-    console.log('Country: ', country)
-    api
-      .get(`/geocommunities/${country}/states`)
-      .then((res) => {
-        const states = res.data.body.map((item) => ({
-          label: item.name,
-          uuid: item.uuid
-        }))
-        const payload = {
-          name: country,
-          divisionName: 'States',
-          items: states,
-          polls: [],
-          statics: [],
-          debates: [],
-          aims: []
-        }
-        commit('UPDATE_COUNTRY', payload)
-      })
-      .catch((e) => console.error(e))
+    api.get(`/geocommunities/${country}/states`).then((res) => {
+      const states = res.data.body.map((item) => ({
+        label: item.name,
+        uuid: item.uuid
+      }))
+      const payload = {
+        name: country,
+        divisionName: 'States',
+        items: states,
+        polls: [],
+        statics: [],
+        debates: [],
+        aims: []
+      }
+      commit('UPDATE_COUNTRY', payload)
+    })
+  },
+  update_states: ({ commit }, country, state) => {
+    api.get(`/geocommunities/${country}/${state}/cities`).then((res) => {
+      const cities = res.data.body.map((item) => ({
+        label: item.name,
+        uuid: item.uuid
+      }))
+      const payload = {
+        name: state,
+        divisionName: 'cities',
+        items: cities,
+        polls: [],
+        statics: [],
+        debates: [],
+        aims: []
+      }
+      commit('UPDATE_STATE', payload)
+    })
   }
-  // update_state: () => console.log('Estamos desarrollando esta función')
 }

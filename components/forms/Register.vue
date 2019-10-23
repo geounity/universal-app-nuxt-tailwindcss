@@ -24,6 +24,9 @@
       .mb-2
         button(@click="register" class='hover:bg-teal-600 focus:outline-none focus:shadow-outline' type='button').py-2.px-4.bg-teal-500.text-gray-100.font-bold.border-teal-600.rounded.w-full
           | Crear tu usuario
+      .flex.justify-between.items-center
+        button(type="button" @click="authWithGoogle") Google
+        button(type="button" @click="authWithFacebook") Facebook
       nuxt-link.inline-block.align-baseline.font-bold.text-sm.text-purple-500.w-full(to="/login" class='hover:text-purple-800' href='#')
         | ¿Ya tienes un usuario? Inicia sesión
     p.text-center.text-gray-100.text-xs
@@ -68,6 +71,26 @@ export default {
             }, 10000)
           })
       }
+    },
+    authWithGoogle() {
+      this.$store.dispatch('users/auth_google').catch((error) => {
+        this.error = true
+        this.errorCode = error.code
+        this.errorMsg = error.message
+        setTimeout(() => {
+          this.error = false
+        }, 10000)
+      })
+    },
+    authWithFacebook() {
+      this.$store.dispatch('users/auth_facebook').catch((error) => {
+        this.error = true
+        this.errorCode = error.code
+        this.errorMsg = error.message
+        setTimeout(() => {
+          this.error = false
+        }, 10000)
+      })
     }
   }
 }

@@ -11,28 +11,12 @@
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import BottomNav from '../components/layout/BottomNav'
-import { auth } from '~/services/firebase'
 
 export default {
   name: 'Default',
   components: { Footer, Header, BottomNav },
   data() {
     return {}
-  },
-  beforeMount() {
-    const self = this
-    auth.onAuthStateChanged(function(user) {
-      if (user) {
-        const newUser = {
-          username: user.displayName,
-          email: user.email,
-          emailVerified: user.emailVerified,
-          photoURL: user.photoURL,
-          uid: user.uid
-        }
-        self.$store.commit('users/SET_USER', newUser)
-      }
-    })
   }
 }
 </script>

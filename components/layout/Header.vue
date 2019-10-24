@@ -45,8 +45,8 @@
         //-     a(href="#" @click="logout" class="hover:bg-indigo-500 hover:text-white").block.px-4.py-2.text-gray-800 Cerrar sesión
 
         div(v-else).flex.text-sm
-          nuxt-link(to="/auth/signin" class="border border-gray-100 bg-white font-semibold p-2 ml-2 leading-none rounded text-lg md:text-sm lg:text-lg text-teal-500 hover:border-transparent hover:bg-gray-100") Iniciar sesión
-          nuxt-link(to="/auth/signup" class="border border-teal-600 bg-teal-500 p-2 ml-2 text-gray-100 font-semibold leading-none rounded text-lg md:text-sm lg:text-lg hover:border-transver:bg-teal parent h-600") Registrarse
+          nuxt-link(to="/auth/signin" class="border border-gray-400 bg-gray-200 font-semibold p-2 ml-2 leading-none rounded text-sm md:text-sm lg:text-lg text-teal-500 hover:border-transparent hover:bg-gray-400") Iniciar sesión
+          nuxt-link(to="/auth/signup" class="border border-teal-600 bg-teal-500 p-2 ml-2 text-gray-100 font-semibold leading-none rounded text-sm md:text-sm lg:text-lg hover:border-transver:bg-teal parent h-600") Registrarse
 </template>
 
 <script>

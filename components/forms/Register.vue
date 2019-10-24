@@ -1,19 +1,20 @@
 <template lang="pug">
-  .w-full.max-w-md.text-center
+  .w-full.max-w-md
     form(class="md:px-8").bg-white.shadow-lg.rounded.px-6.py-4.mt-3.mx-2
-      h2.text-2xl.font-bold.mb-4 Registrate en segundos
-      .mb-4
+      h2.text-2xl.font-bold.mb-4.text-center Registrate en segundos
+      .mb-1
         label.block.text-gray-700.text-sm.font-bold.mb-1(for='username')
           | Nombre de usuario
-        input#username.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(v-model="form.username" class='focus:outline-none focus:shadow-outline' type='text' placeholder='Username' maxlength="15")
+        input#username.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(v-model="form.username" @input="handleInputUsername" class='focus:outline-none focus:shadow-outline' :class="{allowedOutline: allowedUsername}" type='text' placeholder='Username' maxlength="15")
+        span.text-left.text-gray-600.text-xs(:class="{allowed: allowedUsername}") {{charsUsername}}/15
       .mb-4
         label.block.text-gray-700.text-sm.font-bold.mb-1(for='email')
           | Correo electrónico
-        input#email.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(v-model="form.email" class='focus:outline-none focus:shadow-outline' type='email' placeholder='email@example.com')
+        input#email.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(v-model="form.email" @input="handleInputEmail" class='focus:outline-none focus:shadow-outline' :class="{allowedOutline: allowedEmail}" type='email' placeholder='email@example.com')
       .mb-2
         label.block.text-gray-700.text-sm.font-bold.mb-1(for='password')
           | Contraseña
-        input#password.shadow.appearance-none.border.border.rounded.w-full.py-2.px-3.text-gray-700.mb-3.leading-tight(v-model="form.password" class='focus:outline-none focus:shadow-outline' type='password' placeholder='******************')
+        input#password.shadow.appearance-none.border.border.rounded.w-full.py-2.px-3.text-gray-700.mb-3.leading-tight(v-model="form.password" @input="handleInputPass" class='focus:outline-none focus:shadow-outline' :class="{allowedOutline: allowedPassword}" type='password' placeholder='******************')
       .mb-4
         label(class="block text-gray-500 font-bold").text-left
           input.mr-2.leading-tight(type="checkbox" v-model="form.checkbox")
@@ -21,10 +22,10 @@
       .mb-4.bg-red-300.border-l-4.border-red-700.text-red-800.text-left.p-4(v-if="error" role="alert")
         p.font-bold.text-sm {{ errorMsg }}
         p {{ errorCode }}
-      .mb-2
+      div
         button(@click="register" class='hover:bg-teal-600 focus:outline-none focus:shadow-outline' type='button').py-2.px-4.bg-teal-500.text-gray-100.font-bold.border-teal-600.rounded.w-full
           | Crear tu usuario
-      h5.mb-2.text-sm.text-gray-500 ------------------- O registrate con: -------------------
+      h5.my-4.text-center.text-sm.text-gray-500 ------------------- O registrate con: -------------------
       .flex.flex-col.items-center(class="md:flex")
         button(type="button" @click="authWithGoogle").google-button.border.border-gray-400.bg-gray-200.mb-2.p-0.rounded.w-full
           span.google-button__icon
@@ -36,7 +37,7 @@
           span.facebook-button__icon
             img(src="/facebook.svg" alt="Logo de facebook")
           span.facebook-button__text.font-bold Sign in with Facebook
-      nuxt-link.inline-block.align-baseline.font-bold.text-sm.text-purple-500.w-full(to="/auth/signin" class='hover:text-purple-800' href='#')
+      nuxt-link.inline-block.align-baseline.font-bold.text-center.text-sm.text-purple-500.w-full(to="/auth/signin" class='hover:text-purple-800' href='#')
         | ¿Ya tienes un usuario? Inicia sesión
     p.text-center.text-gray-100.text-xs
       | &copy;2019 Geounity Organization. All rights reserved.
@@ -46,6 +47,10 @@
 export default {
   name: 'FormRegister',
   data: () => ({
+    allowedEmail: false,
+    allowedUsername: false,
+    allowedPassword: false,
+    charsUsername: 0,
     form: {
       username: '',
       email: '',
@@ -57,6 +62,44 @@ export default {
     errorMsg: ''
   }),
   methods: {
+    authWithGoogle() {
+      this.$store.dispatch('users/auth_google').catch((error) => {
+        this.error = true
+        this.errorCode = error.code
+        this.errorMsg = error.message
+        setTimeout(() => {
+          this.error = false
+        }, 10000)
+      })
+    },
+    authWithFacebook() {
+      this.$store.dispatch('users/auth_facebook').catch((error) => {
+        this.error = true
+        this.errorCode = error.code
+        this.errorMsg = error.message
+        setTimeout(() => {
+          this.error = false
+        }, 10000)
+      })
+    },
+    handleInputEmail() {
+      this.allowedEmail = this.validateEmail(this.form.email)
+    },
+    handleInputUsername() {
+      this.charsUsername = this.form.username.length
+      if (this.charsUsername < 3) {
+        this.allowedUsername = false
+      } else {
+        this.allowedUsername = true
+      }
+    },
+    handleInputPass() {
+      if (this.form.password.length < 6) {
+        this.allowedPassword = false
+      } else {
+        this.allowedPassword = true
+      }
+    },
     register(e) {
       e.preventDefault()
       if (!this.form.checkbox) {
@@ -81,31 +124,23 @@ export default {
           })
       }
     },
-    authWithGoogle() {
-      this.$store.dispatch('users/auth_google').catch((error) => {
-        this.error = true
-        this.errorCode = error.code
-        this.errorMsg = error.message
-        setTimeout(() => {
-          this.error = false
-        }, 10000)
-      })
-    },
-    authWithFacebook() {
-      this.$store.dispatch('users/auth_facebook').catch((error) => {
-        this.error = true
-        this.errorCode = error.code
-        this.errorMsg = error.message
-        setTimeout(() => {
-          this.error = false
-        }, 10000)
-      })
+    validateEmail(email) {
+      // eslint-disable-next-line no-console
+      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(String(email).toLowerCase())
     }
   }
 }
 </script>
 
 <style scoped>
+.allowed {
+  color: teal;
+  font-weight: bold;
+}
+.allowedOutline {
+  box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.5);
+}
 .google-button,
 .facebook-button {
   height: 40px;

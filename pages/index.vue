@@ -1,9 +1,12 @@
 <template lang="pug">
   #pageIndex
-    section(v-if="!isAuth" class="md:flex-row md:justify-around md:items-center md:text-left").presentation.w-full.py-5.flex.flex-col.items-center.text-center
-      div.text-white
-        h1(class="md:text-4xl lg:text-5xl xl:text-6xl").text-3xl.font-black Mediación Digital
-        h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.py-2 Debates entre comunidades y personas. <br/> Comparte tu visión del mundo con todos.
+    section(v-if="!isAuth" class="md:flex-row md:justify-around md:items-center md:text-left").presentation.w-full.py-5.flex.flex-col.items-center
+      div.text-white.text-center
+        h1(class="md:text-4xl lg:text-5xl xl:text-6xl").text-3xl.font-black.my-2 Mediación Digital
+        ul
+          li: h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.pb-2 Debates entre comunidades y personas.
+          li: h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.pb-2 Puntos de vistas entre partidos políticos.
+          li: h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.pb-2 Comparte tu perspectiva única con todos.
       FormRegister
     .div(v-else class="md:flex-row")
       Breadcrumbs

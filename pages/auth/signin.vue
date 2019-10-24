@@ -1,7 +1,7 @@
 <template lang="pug">
-  .container.bg-gray-500
+  .bg-gray-500.pt-5
     .w-full.max-w-md.text-center
-      form.bg-white.shadow-md.rounded.px-6.pt-6.pb-8.mb-4
+      form.bg-white.shadow-md.rounded.px-6.pt-6.pb-8.mb-4.mx-2
         h2.text-2xl.font-bold.text-center Inicia sesión
         .mb-4
           p.text-red-500.text-xs.italic(v-if="error")

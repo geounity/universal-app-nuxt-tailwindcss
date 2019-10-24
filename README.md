@@ -1,8 +1,12 @@
-# Geounity
+<p align="center">
+  <a href="https://geounity.org" target="_blank">
+    <img src="./.readme-images/simbolo.gif" alt="Simbolo de la Paz"/>
+  </a>
+  <h1 align="center"> Geounity </h1>
+  <h2 align="center">Debates between communities and peoples of world.</h2>
+</p>
 
-> Debates between communities and peoples of world.
-
-## Build Setup
+## THE SYMBOL OF THE FLAG OF PEACE
 
 ``` bash
 # install dependencies

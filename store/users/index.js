@@ -5,7 +5,8 @@ auth.useDeviceLanguage()
 
 export const state = () => ({
   user: null,
-  test: null
+  test: null,
+  error: null
 })
 
 export const getters = {
@@ -32,10 +33,16 @@ export const mutations = {
     state.user.photoURL = ''
   },
   SET_USER: (state, account) => {
-    state.user = account
+    state.user = {
+      ...state.user,
+      ...account
+    }
   },
   SET_TEST: (state, test) => {
     state.test = test
+  },
+  SET_ERROR: (state, error) => {
+    state.error = error
   }
 }
 
@@ -43,14 +50,34 @@ export const actions = {
   auth_google({ commit }) {
     const provider = new Auth.GoogleAuthProvider()
     auth
-      .signInWithRedirect(provider)
+      .signInWithPopup(provider)
       .then((res) => {
-        commit('SET_TEST', 'res')
-        const token = res.credential.accessToken
-        Cookie.set('access_token', token)
+        if (res.additionalUserInfo.isNewUser) {
+          const token = res.credential.getIdToken
+          Cookie.set('access_token', token)
+          commit('SET_TEST', res)
+        }
+        const newUser = {
+          name: res.additionalUserInfo.profile.given_name || '',
+          lastname: res.additionalUserInfo.profile.family_name || '',
+          email: res.additionalUserInfo.profile.email || '',
+          verified_email: res.additionalUserInfo.profile.verified_email || '',
+          locale: res.additionalUserInfo.profile.locale || '',
+          uid: res.additionalUserInfo.profile.id || ''
+        }
+        firestore
+          .collection('users')
+          .add(newUser)
+          .then((doc) => {
+            api.post('/user', {
+              ...newUser,
+              id_doc_firestore: doc.id
+            })
+            commit('SET_USER', newUser)
+          })
       })
       .catch((error) => {
-        throw error
+        commit('SET_ERROR', error)
       })
   },
   auth_facebook({ commit }) {

@@ -2,8 +2,10 @@
   <a href="https://geounity.org" target="_blank">
     <img src="./.readme-images/simbolo.gif" alt="Simbolo de la Paz"/>
   </a>
-  <h1 align="center"> Geounity </h1>
-  <h2 align="center">Debates between communities and peoples of world.</h2>
+  <h1 align="center"> Geounity <br /> </h1>
+</p>
+<p align="center">
+  Debates between communites and peoples of world.
 </p>
 
 ## THE SYMBOL OF THE FLAG OF PEACE

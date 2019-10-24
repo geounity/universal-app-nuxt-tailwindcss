@@ -10,19 +10,8 @@
 
 ## THE SYMBOL OF THE FLAG OF PEACE
 
-``` bash
-# install dependencies
-$ npm run install
+The logo of the Flag of Peace, are three spheres of magenta color, forming a triangle with the vertex facing up, surrounded by a circle of the same color on a white background.
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+Its initiator was the illustrious artist [Nicolás Roerich (1874-1947)](http://www.banderadelapaz.org/bandera/roerich_biografia.shtml), who chose this ancient symbol of Unity and Peace, for its universal significance and acceptance, since it appears in almost all cultures and religions, and is respected by all of them.
 
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+More info [here](http://www.banderadelapaz.org/).

@@ -14,4 +14,6 @@ The logo of the Flag of Peace, are three spheres of magenta color, forming a tri
 
 Its initiator was the illustrious artist [Nicolás Roerich (1874-1947)](http://www.banderadelapaz.org/bandera/roerich_biografia.shtml), who chose this ancient symbol of Unity and Peace, for its universal significance and acceptance, since it appears in almost all cultures and religions, and is respected by all of them.
 
+Through this arcane logo, we can connect with the deepest archetypes of peace, inscribed in the human psyche, which stimulates its learning and use. Hence his great strength.
+
 More info [here](http://www.banderadelapaz.org/).

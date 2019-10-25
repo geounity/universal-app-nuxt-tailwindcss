@@ -1,6 +1,6 @@
 <template lang="pug">
   .bg-gray-500.pt-5
-    .w-full.max-w-md.text-center
+    .w-full.max-w-md.text-center.mt-5.mx-auto.h-screen(class="md:mt-48")
       form.bg-white.shadow-md.rounded.px-6.pt-6.pb-8.mb-4.mx-2
         h2.text-2xl.font-bold.text-center Inicia sesión
         .mb-4
@@ -34,8 +34,7 @@
             span.facebook-button__text.font-bold Sign in with Facebook
         nuxt-link.inline-block.align-baseline.font-bold.text-sm.text-purple-500.w-full(to="/login" class='hover:text-purple-800' href='#')
           | ¿Olvidaste la contraseña?
-            
-      p.text-center.text-gray-500.text-xs
+      p.text-center.text-gray-100.text-xs
         | &copy;2019 Geounity Organization. All rights reserved.
 </template>
 

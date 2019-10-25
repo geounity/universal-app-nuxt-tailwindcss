@@ -18,7 +18,7 @@ export const getters = {
     if (state.user && state.user.id_postgres) return state.user.id_postgres
     else return null
   },
-  isAuth: (state) => !!state.user && !!state.user.uid,
+  isAuth: (state) => !!state.user && !!state.user.email,
   username: (state) => {
     if (state.user && state.user.username) return state.user.username
     else return null
@@ -47,40 +47,54 @@ export const mutations = {
 }
 
 export const actions = {
-  auth_google({ commit }) {
+  auth_google({ commit }, { router }) {
     const provider = new Auth.GoogleAuthProvider()
     auth
       .signInWithPopup(provider)
       .then((res) => {
-        if (res.additionalUserInfo.isNewUser) {
-          const token = res.credential.getIdToken
-          Cookie.set('access_token', token)
-          commit('SET_TEST', res)
-        }
+        const token = res.credential.idToken
+        Cookie.set('access_token', token)
         const newUser = {
+          email: res.additionalUserInfo.profile.email || '',
+          email_verified: res.additionalUserInfo.profile.verified_email || '',
           name: res.additionalUserInfo.profile.given_name || '',
           lastname: res.additionalUserInfo.profile.family_name || '',
-          email: res.additionalUserInfo.profile.email || '',
-          verified_email: res.additionalUserInfo.profile.verified_email || '',
           locale: res.additionalUserInfo.profile.locale || '',
-          uid: res.additionalUserInfo.profile.id || ''
+          photoURL: res.additionalUserInfo.profile.photoURL || '',
+          providerId: res.additionalUserInfo.providerId
         }
-        firestore
-          .collection('users')
-          .add(newUser)
-          .then((doc) => {
-            api.post('/user', {
-              ...newUser,
-              id_doc_firestore: doc.id
-            })
-            commit('SET_USER', newUser)
-          })
+        commit('SET_USER', newUser)
+        router.push('/user/profile')
+        // firestore
+        //   .collection('users')
+        //   .add(newUser)
+        //   .then((doc) => {
+        //     api.post('/user', {
+        //       ...newUser,
+        //       id_doc_firestore: doc.id
+        //     })
+        //     commit('SET_USER', newUser)
+        //   })
       })
       .catch((error) => {
-        commit('SET_ERROR', error)
+        commit('SET_ERROR', 'Error: ' + error)
       })
   },
-  auth_facebook({ commit }) {
+  auth_facebook({ commit }, { router }) {
+    const provider = new Auth.FacebookAuthProvider()
+    auth.signInWithPopup(provider).then((res) => {
+      const token = res.credential.accessToken
+      Cookie.set('access_token', token)
+      const newUser = {
+        name: res.additionalUserInfo.profile.first_name || '',
+        lastname: res.additionalUserInfo.profile.last_name || '',
+        email: res.additionalUserInfo.profile.email,
+        photoURL: res.additionalUserInfo.profile.picture.data.url,
+        providerId: res.additionalUserInfo.providerId
+      }
+      commit('SET_USER', newUser)
+      router.push('/user/profile')
+    })
     // -
   },
   delete_image({ commit }, fileName) {
@@ -125,7 +139,7 @@ export const actions = {
       const newUser = {
         username: form.username,
         email: auth.currentUser.email,
-        uid: auth.currentUser.uid
+        id: auth.currentUser.uid
       }
       const doc = await firestore.collection('users').add(newUser)
       await api.post('/user', {
@@ -154,5 +168,17 @@ export const actions = {
     } catch (error) {
       throw error
     }
+  },
+  verifyAuth({ commit }) {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const dataUser = {
+          photoURL: user.photoURL,
+          email: user.email,
+          email_verified: user.emailVerified
+        }
+        commit('SET_USER', dataUser)
+      }
+    })
   }
 }

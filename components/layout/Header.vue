@@ -36,14 +36,6 @@
                   nuxt-link(to="/" class="hover:bg-gray-200").block.px-6.py-3.leading-tight Mis Propuestas
                 .border-t-2.border-gray-200.py-1
                   a(href="#" @click="logout" class="block w-full px-6 py-3 text-left leading-tight hover:bg-gray-200") Cerrar sesión
-
-        //- div(v-if="isAuth").inline-block.relative
-        //-   button(@click="showMenuUser=!showMenuUser" class="focus:outline-none focus:border-white").block.h-10.w-10.rounded-full.overflow-hidden.border-2.border-gray-500
-        //-     img(:src="avatar?avatar:'/sinfoto.png'" alt="Mi foto de perfil").h-full.w-full.object-cover
-        //-   div(v-show="showMenuUser").mt-2.py-2.w-48.bg-white.rounded-lg.shadow-xl.absolute.right-0
-        //-     nuxt-link(to="/user/profile" class="hover:bg-indigo-500 hover:text-white").block.px-4.py-2.text-gray-800 {{ username }}
-        //-     a(href="#" @click="logout" class="hover:bg-indigo-500 hover:text-white").block.px-4.py-2.text-gray-800 Cerrar sesión
-
         div(v-else).flex.text-sm
           nuxt-link(to="/auth/signin" class="border border-gray-400 bg-gray-200 font-semibold p-2 ml-2 leading-none rounded text-sm md:text-sm lg:text-lg text-teal-500 hover:border-transparent hover:bg-gray-400") Iniciar sesión
           nuxt-link(to="/auth/signup" class="border border-teal-600 bg-teal-500 p-2 ml-2 text-gray-100 font-semibold leading-none rounded text-sm md:text-sm lg:text-lg hover:border-transver:bg-teal parent h-600") Registrarse
@@ -63,6 +55,9 @@ export default {
       isAuth: 'users/isAuth',
       username: 'users/username'
     })
+  },
+  beforeMount() {
+    this.$store.dispatch('users/verifyAuth')
   },
   methods: {
     logout() {

@@ -1,6 +1,7 @@
 <template lang="pug">
   .bg-gray-500.pt-5
-    FormRegister
+    div(class="md:mt-32")
+      FormRegister
 </template>
 
 <script>

@@ -1,15 +1,21 @@
 <template lang="pug">
-  .container.flex.flex-col
+  .flex.flex-col.items-center.mt-10.text-center
+    div(v-if="!username" role="alert").bg-yellow-200.border-l-4.border-yellow-600.text-left.text-yellow-900.p-4
+      p.font-bold Define un username
+      p Debes definir un nombre de usuario para empezar a crear contenido.
     h1.text-5xl.font-black {{ username }}
-    form.flex.flex-col.px-4
-      figure
+    form.flex.flex-col.mt-4.px-4
+      label(for="name").block.text-gray-700.text-sm.font-bold.mt-4 Username
+        input(v-model="username" id="username" placeholder="Ingresa un nombre de usuario" class="focus:outline-none focus:shadow-outline" type="text").text-center.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight
+      figure.mt-4
         img(:src="avatar?avatar:'/sinfoto.png'" @click.prevent="selectFile" class="avatar" style="border-radius:50%").mx-auto
       h3.text-lg.text-red-600 {{ error }}
-      button(v-if="!loading" @click.prevent="selectFile").mt-5.bg-purple-500.text-white.font-bold.py-2.px-4.rounded Subir foto
-      input(id="file" type="file" name="file" :multiple="false" ref="uploadInput" accept="image/*" @change="detectFile($event)").invisible
+      div(v-if="avatar").mt-4
+        button.bg-red-500.text-white.font-bold.py-2.px-4.rounded.w-40 Borrar foto
+      div
+        button(v-if="!loading" @click.prevent="selectFile").mt-4.bg-purple-500.text-white.font-bold.py-2.px-4.rounded.w-40 Subir foto
+      input(id="file" type="file" name="file" :multiple="false" ref="uploadInput" accept="image/*" @change="detectFile($event)").absolute.invisible
       div(:style="{width:progressUpload+'%'}" class="lala").font-semibold {{ progressUpload }}%
-      div(v-if="avatar")
-        button.mr-2.bg-red-500.text-white.font-bold.py-2.px-4.rounded.w-full Borrar imagen
       label(for="name").block.text-gray-700.text-sm.font-bold.mt-4 Nombre
         input(v-model="formInfo.name" id="name" placeholder="Ingresa tu nombre" class="focus:outline-none focus:shadow-outline" type="text").text-center.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight
       label(for="lastname").block.text-gray-700.text-sm.font-bold.mt-4 Apellido
@@ -67,6 +73,10 @@ export default {
       )
     }
   },
+  mounted() {
+    this.formInfo.name = this.$store.state.users.user.name
+    this.formInfo.lastname = this.$store.state.users.user.lastname
+  },
   methods: {
     selectFile() {
       this.$refs.uploadInput.click()
@@ -88,7 +98,11 @@ export default {
       this.loading = false
     },
     updateInfoUser() {
-      this.$store.dispatch('users/update_info_user', this.formInfo).then(() => {
+      const data = {
+        ...this.formInfo,
+        username: this.username
+      }
+      this.$store.dispatch('users/update_info_user', data).then(() => {
         this.$router.push('/')
       })
     }

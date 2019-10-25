@@ -1,5 +1,5 @@
 <template lang="pug">
-  .w-full.max-w-md
+  .w-full.max-w-md.mt-5.mx-auto
     form(class="md:px-8").bg-white.shadow-lg.rounded.px-6.py-4.mt-3.mx-2
       h2.text-2xl.font-bold.mb-4.text-center Registrate en segundos
       .mb-1
@@ -63,24 +63,28 @@ export default {
   }),
   methods: {
     authWithGoogle() {
-      this.$store.dispatch('users/auth_google').catch((error) => {
-        this.error = true
-        this.errorCode = error.code
-        this.errorMsg = error.message
-        setTimeout(() => {
-          this.error = false
-        }, 10000)
-      })
+      this.$store
+        .dispatch('users/auth_google', { router: this.$router })
+        .catch((error) => {
+          this.error = true
+          this.errorCode = error.code
+          this.errorMsg = error.message
+          setTimeout(() => {
+            this.error = false
+          }, 10000)
+        })
     },
     authWithFacebook() {
-      this.$store.dispatch('users/auth_facebook').catch((error) => {
-        this.error = true
-        this.errorCode = error.code
-        this.errorMsg = error.message
-        setTimeout(() => {
-          this.error = false
-        }, 10000)
-      })
+      this.$store
+        .dispatch('users/auth_facebook', { router: this.$router })
+        .catch((error) => {
+          this.error = true
+          this.errorCode = error.code
+          this.errorMsg = error.message
+          setTimeout(() => {
+            this.error = false
+          }, 10000)
+        })
     },
     handleInputEmail() {
       this.allowedEmail = this.validateEmail(this.form.email)

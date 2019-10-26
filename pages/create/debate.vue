@@ -10,6 +10,7 @@
           v-model="form.title"
           type="text"
           placeholder="Título del debate"
+          maxlength="100"
         )
       .mt-4
         label.block.text-gray-700.text-md.font-bold.mb-1(for="description") Descripción
@@ -23,11 +24,13 @@
       .mt-4
         label.block.text-gray-700.text-md.font-bold.mb-1(for="file") Imagenes
         button(type="button" @click.prevent="selectFile").inline-block.bg-blue-500.rounded.text-sm.text-white.font-bold.px-4.py-2.mr-2 Agregar imagen
-        p.inline-block.text-gray-600 Los usuarios comunes solo pueden agregar una imagen.
-        input(id="file" type="file" name="file" :multiple="false" ref="uploadInput" accept="image/*" @change="detectFile($event)").invisible
-      .mt-4.flex.flex-wrap
-        label.w-full.block.text-gray-700.text-md.font-bold.mb-1(for="description") Comunidad que participará
-        p.w-full.inline-block.text-gray-600.my-1 Puede seleccionar las subcomunidades que desee.
+        p.inline-block.text-gray-600 Por el momento solo podrá agregar una imagen.
+        input(id="file" type="file" name="file" :multiple="false" ref="uploadInput" accept="image/*" @change="detectFile($event)").absolute.invisible
+        figure
+          img(v-if="form.fileUrl[0]" :src="form.fileUrl[0]")
+      .mt-6.flex.flex-wrap
+        label.w-full.block.text-gray-700.text-md.font-bold(for="description") Comunidad que participará
+        p.w-full.inline-block.text-gray-600.mb-1 Puede seleccionar las subcomunidades que desee.
         //- Continents
         div(class="w-1/2 md:w-1/3 lg:w-1/4").px-2
           label.block.text-gray-700.text-sm.font-bold.mb-1(for="description") Continentes
@@ -71,6 +74,8 @@
             id="min"
             v-model="form.char_min"
             type="number"
+            min="2"
+            max="200"
           )
         div(class="w-1/2 md:w-1/3").px-2
           label.block.text-gray-700.text-sm.font-bold.mb-1(for="max") Máximo
@@ -79,19 +84,30 @@
             id="max"
             v-model="form.char_max"
             type="number"
+            min="10"
+            max="500"
           )
         p.inline-block.text-gray-600.mt-1 Es la cantidad de caracteres que cada usuario podrá usar para opinar.
-      .mt-4.flex.flex-col.justify-between.h-16
+      .mt-5
+        h3.w-full.block.text-gray-700.text-md.font-bold.mb-1 Categoría
+        input(type="radio" id="r1" name="categoty" value="region")
+        label(for="r1").font-bold.ml-2.text-gray-800.text-md Regional: #[i.text-gray-600.text-xs Participarán las subcomunidades internas]
+        <br/>
+        input(type="radio" id="r2" name="categoty" value="politic")
+        label(for="r2").font-bold.ml-2.text-gray-800.text-md Política: #[i.text-gray-600.text-xs Participarán los partídos políticos de la comunidad]
+        <br/>
+        input(type="radio" id="r3" name="categoty" value="religion")
+        label(for="r3").font-bold.ml-2.text-gray-800.text-md Religión: #[i.text-gray-600.text-xs Participarán las religiones de la comunidad]
+      .mt-4.h-16
         strong {{form.public?'Publico':'Privado'}}
         span(v-if="form.public" @click="form.public=!form.public").border.rounded-full.border-grey.flex.items-center.cursor-pointer.w-12.bg-green-600.justify-end
           span.rounded-full.border.w-6.h-6.border-grey.shadow-inner.bg-white.shadow          
         span(v-else @click="form.public=!form.public").border.rounded-full.border-grey.flex.items-center.cursor-pointer.w-12.justify-start
           span.rounded-full.border.w-6.h-6.border-grey.shadow-inner.bg-white.shadow
-        p.inline-block.text-gray-600.mt-1 Los debates públicos serán visto por todos los usuarios dentro de la comundiad.
-        p.inline-block.text-gray-600.mt-1 Los debates privados serán visto por un subconjunto seleccionado dentro de la comunidad.
-
+        p(v-if="form.public").inline-block.text-gray-600.mt-1 Los debates públicos serán vistos por todos los usuarios y cualquier usuario dentro de la comunidad podrá opinar.
+        p(v-else).inline-block.text-gray-600.mt-1 Los debates privados serán vistos solo por los usuarios dentro de la comunidad y solo un grupo pre-selecionado podrá opinar.
       .mt-12
-        button(type="submit" @click="openDebate" class="hover:bg-teal-600").mt-5.bg-teal-500.text-white.font-bold.py-2.px-4.rounded.w-full Abrir debate
+        button(type="submit" @click="openDebate" class="hover:bg-teal-600").my-10.bg-teal-500.text-white.font-bold.py-2.px-4.rounded.w-full Abrir debate
 </template>
 
 <script>
@@ -109,7 +125,7 @@ export default {
     form: {
       title: '',
       description: '',
-      fileName: [],
+      fileUrl: [],
       geopolitic_uuid: '',
       char_min: 2,
       char_max: 300,
@@ -133,8 +149,7 @@ export default {
         (error) => (this.error = 'Error al cargar la imagen: ' + error),
         () => {
           this.uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            this.form.fileName[0] = downloadURL
-            // this.$store.commit('users/ADD_PHOTO', downloadURL)-
+            this.form.fileUrl[0] = downloadURL
             this.loading = false
           })
         }
@@ -170,7 +185,7 @@ export default {
     },
     deleteImage() {
       this.loading = true
-      // this.$store.dispatch('users/delete_image', this.formInfo.fileName)
+      // this.$store.dispatch('users/delete_image', this.formInfo.fileUrl)
       this.loading = false
     },
 

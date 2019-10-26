@@ -1,5 +1,5 @@
 export default function({ store, route, redirect }) {
-  if (!store.getters['users/username']) {
+  if (!store.getters['users/username'] || !store.getters['users/isVerified']) {
     const blockedRoute = /\/create\/*/g
     if (route.path.match(blockedRoute)) {
       redirect('/user/profile')

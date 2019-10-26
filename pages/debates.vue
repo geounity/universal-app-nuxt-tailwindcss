@@ -1,6 +1,14 @@
 <template lang="pug">
   .h-screen
     Breadcrumbs
+    div(v-if="isAuth").text-center
+      div(v-if="isVerified")
+        nuxt-link(to="/create/debate" tag="button" class="hover:bg-purple-600").bg-purple-500.text-white.font-bold.mt-5.py-2.px-4.rounded.w-64 Abrir un debate
+      div(v-else)
+        div(role="alert").bg-yellow-200.border-l-4.border-yellow-600.text-left.text-yellow-900.p-4.mx-4
+          p.font-bold Debemos verificar su correo
+          p Le hemos enviado un correo de confirmación
+          button(type="button" @click="resend") Enviar de nuevo
     div(v-if="!debates || debates.length === 0").mt-10
       h1.text-2xl.text-center.px-2 No hay debates en esta comunidad
     div(v-if="!isAuth").my-10
@@ -8,8 +16,6 @@
       .flex.px-6.max-w-sm.mx-auto
         nuxt-link(to="/auth/signin" tag="button" class="hover:border-transparent hover:bg-gray-500").border.border-gray-400.rounded.leading-none.font-semibold.text-teal-600.bg-gray-300.mr-2.mt-5.py-2.px-4.w-full Iniciar sesión
         nuxt-link(to="/auth/signup" tag="button" class="bg-teal-500 text-gray-100 font-semibold leading-none border border-teal-600 rounded hover:border-transparent hover:bg-teal-600").ml-2.mt-5.py-2.px-4.w-full Registrarse
-    div(v-if="isAuth")
-      nuxt-link(to="/create/debate" tag="button").mt-5.bg-purple-500.text-white.font-bold.py-2.px-4.rounded.w-full Abrir un debate aquí
     .container(v-if="errorMsg")
       h3.text-lg {{ errorMsg }}
     main
@@ -33,6 +39,7 @@
 import { mapGetters, mapState } from 'vuex'
 import Breadcrumbs from '~/components/utils/Breadcrumbs'
 import CardDebate from '~/components/cards/debate'
+import { auth } from '~/services/firebase'
 export default {
   name: 'DebatesPage',
   components: { CardDebate, Breadcrumbs },
@@ -43,7 +50,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isAuth: 'users/isAuth'
+      isAuth: 'users/isAuth',
+      isVerified: 'users/isVerified'
     }),
     ...mapState({
       debates: (state) => state.debate.debates
@@ -53,6 +61,11 @@ export default {
     this.$store.dispatch('debate/get_debates').catch((error) => {
       this.errorMsg = 'Ups! No podemos comunicarnos el servidor. ' + error
     })
+  },
+  methods: {
+    resend() {
+      auth.currentUser.sendEmailVerification()
+    }
   }
 }
 </script>

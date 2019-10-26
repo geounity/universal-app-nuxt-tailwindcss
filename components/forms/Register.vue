@@ -22,6 +22,7 @@
       .mb-4.bg-red-300.border-l-4.border-red-700.text-red-800.text-left.p-4(v-if="error" role="alert")
         p.font-bold.text-sm {{ errorMsg }}
         p {{ errorCode }}
+      p.text-red-800 {{ errorVuex }}
       div
         button(@click="register" class='hover:bg-teal-600 focus:outline-none focus:shadow-outline' type='button').py-2.px-4.bg-teal-500.text-gray-100.font-bold.border-teal-600.rounded.w-full
           | Crear tu usuario
@@ -44,6 +45,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'FormRegister',
   data: () => ({
@@ -61,6 +63,11 @@ export default {
     errorCode: '',
     errorMsg: ''
   }),
+  computed: {
+    ...mapState({
+      errorVuex: (state) => state.users.error
+    })
+  },
   methods: {
     authWithGoogle() {
       this.$store
@@ -112,7 +119,35 @@ export default {
         setTimeout(() => {
           this.error = false
         }, 10000)
-      } else {
+      }
+      if (!this.allowedUsername) {
+        this.error = true
+        this.errorMsg =
+          'El nombre de usuario debe tener entre 3 y 15 caracteres alfanuméricos'
+        setTimeout(() => {
+          this.error = false
+        }, 10000)
+      }
+      if (!this.allowedEmail) {
+        this.error = true
+        this.errorMsg = 'El correo que ingreso es incorrecto'
+        setTimeout(() => {
+          this.error = false
+        }, 10000)
+      }
+      if (!this.allowedPassword) {
+        this.error = true
+        this.errorMsg = 'La contraseá debe tener al menos 6 caracteres'
+        setTimeout(() => {
+          this.error = false
+        }, 10000)
+      }
+      if (
+        this.form.checkbox &&
+        this.allowedUsername &&
+        this.allowedEmail &&
+        this.allowedPassword
+      ) {
         this.$store
           .dispatch('users/register', this.form)
           .then(() => {

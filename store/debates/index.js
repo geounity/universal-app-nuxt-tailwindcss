@@ -5,9 +5,19 @@ export const state = () => ({
   debates: []
 })
 
+export const getters = {
+  images: (state) => {
+    if (state.debate && state.debate.images) return state.debate.images
+    else return null
+  }
+}
+
 export const mutations = {
+  ADD_IMAGE: (state, image) => {
+    state.debate.image = image
+  },
   SET_DEBATE: (state, debate) => {
-    state.debates = debate
+    state.debate = debate
   },
   SET_DEBATES: (state, debates) => {
     state.debates = debates
@@ -33,8 +43,7 @@ export const actions = {
       community: form.geopolitic_uuid,
       debate: {
         ...form,
-        images: form.fileName,
-        type: 'geopolitics' // bussines or ideologics
+        images: form.fileUrl
       }
     }
     try {

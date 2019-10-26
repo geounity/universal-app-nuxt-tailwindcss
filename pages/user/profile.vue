@@ -1,9 +1,7 @@
 <template lang="pug">
   .flex.flex-col.items-center.mt-10.text-center
     div(v-if="isAuth").text-center
-      div(v-if="isVerified")
-        nuxt-link(to="/create/poll" tag="button" class="hover:bg-purple-600").bg-purple-500.text-white.font-bold.mt-5.py-2.px-4.rounded.w-64 Crear una encuesta
-      div(v-else)
+      div(v-if="!isVerified")
         div(role="alert").bg-yellow-200.border-l-4.border-yellow-600.text-left.text-yellow-900.p-4.mx-4
           p.font-bold Debemos verificar su correo
           p Le hemos enviado un correo de confirmación

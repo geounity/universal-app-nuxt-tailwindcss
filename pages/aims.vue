@@ -21,7 +21,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import Breadcrumbs from '~/components/utils/Breadcrumbs'
-import { auth } from '~/services/firebase'
 export default {
   name: 'AimPage',
   components: { Breadcrumbs },
@@ -38,7 +37,7 @@ export default {
   },
   methods: {
     resend() {
-      auth.currentUser.sendEmailVerification()
+      this.$store.dispatch('users/resend_email_verification')
     }
   }
 }

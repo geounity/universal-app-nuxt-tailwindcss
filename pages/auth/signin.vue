@@ -1,6 +1,6 @@
 <template lang="pug">
   .bg-gray-500.pt-5
-    .w-full.max-w-md.text-center.mt-5.mx-auto.h-screen(class="md:mt-48")
+    .w-full.max-w-md.text-center.mt-5.mx-auto.h-screen(class="md:mt-32")
       form.bg-white.shadow-md.rounded.px-6.pt-6.pb-8.mb-4.mx-2
         h2.text-2xl.font-bold.text-center Inicia sesión
         .mb-4

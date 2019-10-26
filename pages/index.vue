@@ -7,13 +7,23 @@
           li: h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.pb-2 Debates entre comunidades y personas.
           li: h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.pb-2 Puntos de vistas entre partidos políticos.
           li: h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.pb-2 Comparte tu perspectiva única con todos.
+        figure.flex.justify-between
+          img(src="/debate.svg" alt="debate" class="lg:h-40").h-20.mt-10.mx-auto
+          img(src="/analyze.svg" alt="analyze" class="lg:h-40").h-20.mt-10.mx-auto
       FormRegister
     .div(v-else class="md:flex-row")
       Breadcrumbs
       section.mt-10
         div(v-if="isAuth").text-center
-          h3.text-5xl.font-bold Bienvenido
-          nuxt-link(to="/create/debate" tag="button" class="hover:bg-purple-600").bg-purple-500.text-white.font-bold.mt-5.py-2.px-4.rounded.w-64 Abrir un debate
+          div(v-if="isVerified")
+            img(src="/world.svg" alt="mapamundi").h-64.mx-auto
+            h3.text-5xl.font-bold Bienvenido
+            nuxt-link(to="/create/debate" tag="button" class="hover:bg-purple-600").bg-purple-500.text-white.font-bold.mt-5.py-2.px-4.rounded.w-64 Abrir un debate
+          div(v-else)
+            div(role="alert").bg-yellow-200.border-l-4.border-yellow-600.text-left.text-yellow-900.p-4.mx-4
+              p.font-bold Debemos verificar su correo
+              p Le hemos enviado un correo de confirmación
+              button(type="button" @click="resend") Enviar de nuevo
 </template>
 
 <script>
@@ -26,8 +36,14 @@ export default {
   data: () => ({}),
   computed: {
     ...mapGetters({
-      isAuth: 'users/isAuth'
+      isAuth: 'users/isAuth',
+      isVerified: 'users/isVerified'
     })
+  },
+  methods: {
+    resend() {
+      this.$store.dispatch('users/resend_email_verification')
+    }
   }
 }
 </script>

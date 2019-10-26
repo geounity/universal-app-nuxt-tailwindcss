@@ -139,6 +139,9 @@ export const actions = {
       throw error
     }
   },
+  resend_email_verification() {
+    auth.currentUser.sendEmailVerification()
+  },
   async save_user_in_database({ commit }, user) {
     try {
       // Get JWT from Firebase
@@ -163,6 +166,7 @@ export const actions = {
       commit('SET_ERROR', error)
     }
   },
+
   async update_info_user({ state, commit, getters }, userInfo) {
     try {
       await api.patch('/user', {

@@ -26,8 +26,8 @@
         button(type="button" @click.prevent="selectFile").inline-block.bg-blue-500.rounded.text-sm.text-white.font-bold.px-4.py-2.mr-2 Agregar imagen
         p.inline-block.text-gray-600 Por el momento solo podrá agregar una imagen.
         input(id="file" type="file" name="file" :multiple="false" ref="uploadInput" accept="image/*" @change="detectFile($event)").absolute.invisible
-        figure
-          img(v-if="form.fileUrl[0]" :src="form.fileUrl[0]")
+        figure(v-if="images")
+          img(:src="images").h-32.w-auto
       .mt-6.flex.flex-wrap
         label.w-full.block.text-gray-700.text-md.font-bold(for="description") Comunidad que participará
         p.w-full.inline-block.text-gray-600.mb-1 Puede seleccionar las subcomunidades que desee.
@@ -90,13 +90,13 @@
         p.inline-block.text-gray-600.mt-1 Es la cantidad de caracteres que cada usuario podrá usar para opinar.
       .mt-5
         h3.w-full.block.text-gray-700.text-md.font-bold.mb-1 Categoría
-        input(type="radio" id="r1" name="categoty" value="region")
+        input(type="radio" v-model="form.type" id="r1" name="categoty" value="geographic")
         label(for="r1").font-bold.ml-2.text-gray-800.text-md Regional: #[i.text-gray-600.text-xs Participarán las subcomunidades internas]
         <br/>
-        input(type="radio" id="r2" name="categoty" value="politic")
+        input(type="radio" v-model="form.type" id="r2" name="categoty" value="politic")
         label(for="r2").font-bold.ml-2.text-gray-800.text-md Política: #[i.text-gray-600.text-xs Participarán los partídos políticos de la comunidad]
         <br/>
-        input(type="radio" id="r3" name="categoty" value="religion")
+        input(type="radio" v-model="form.type" id="r3" name="categoty" value="religion")
         label(for="r3").font-bold.ml-2.text-gray-800.text-md Religión: #[i.text-gray-600.text-xs Participarán las religiones de la comunidad]
       .mt-4.h-16
         strong {{form.public?'Publico':'Privado'}}
@@ -111,6 +111,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import api from '~/services/apiMongo'
 import { storage } from '~/services/firebase'
 export default {
@@ -129,6 +130,7 @@ export default {
       geopolitic_uuid: '',
       char_min: 2,
       char_max: 300,
+      type: '',
       public: true
     },
     error: '',
@@ -136,7 +138,11 @@ export default {
     progressUpload: 0,
     uploadTask: ''
   }),
-
+  computed: {
+    ...mapGetters({
+      images: 'debates/images'
+    })
+  },
   watch: {
     uploadTask() {
       this.uploadTask.on(
@@ -150,6 +156,7 @@ export default {
         () => {
           this.uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
             this.form.fileUrl[0] = downloadURL
+            this.$store.commit('debates/ADD_IMAGE', downloadURL)
             this.loading = false
           })
         }
@@ -180,7 +187,9 @@ export default {
     },
     upload(file) {
       this.loading = true
-      const filename = this.form.title + this.$store.getters['users/username']
+      const formattedTitle = this.form.title.replace(/ /g, '-').toLowerCase()
+      const filename =
+        formattedTitle + '-' + this.$store.getters['users/username']
       this.uploadTask = storage.ref('images/debates/' + filename).put(file)
     },
     deleteImage() {
@@ -218,7 +227,7 @@ export default {
     },
     openDebate(e) {
       e.preventDefault()
-      this.$store.dispatch('debate/open_debate', this.form)
+      this.$store.dispatch('debates/open_debate', this.form)
     }
   }
 }

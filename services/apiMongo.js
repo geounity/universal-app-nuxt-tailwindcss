@@ -1,8 +1,7 @@
 import trae from 'trae'
-import config from '~/config'
 
 const apiMongo = trae.create({
-  baseUrl: config.configService.apiUrl
+  baseUrl: process.env.apiUrl
 })
 
 export default apiMongo

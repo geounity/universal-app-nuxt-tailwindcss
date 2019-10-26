@@ -3,7 +3,7 @@
     Breadcrumbs
     div(v-if="isAuth").text-center
       div(v-if="isVerified")
-        nuxt-link(to="/create/debate" tag="button" class="hover:bg-purple-600").bg-purple-500.text-white.font-bold.mt-5.py-2.px-4.rounded.w-64 Abrir un debate
+        nuxt-link(to="/create/debate" tag="button" class="hover:bg-teal-600").border-b-2.border-teal-600.bg-teal-500.text-white.font-bold.mt-5.py-2.px-4.rounded.w-64 Abrir un debate
       div(v-else)
         div(role="alert").bg-yellow-200.border-l-4.border-yellow-600.text-left.text-yellow-900.p-4.mx-4
           p.font-bold Debemos verificar su correo
@@ -39,7 +39,6 @@
 import { mapGetters, mapState } from 'vuex'
 import Breadcrumbs from '~/components/utils/Breadcrumbs'
 import CardDebate from '~/components/cards/debate'
-import { auth } from '~/services/firebase'
 export default {
   name: 'DebatesPage',
   components: { CardDebate, Breadcrumbs },
@@ -54,17 +53,17 @@ export default {
       isVerified: 'users/isVerified'
     }),
     ...mapState({
-      debates: (state) => state.debate.debates
+      debates: (state) => state.debates.debates
     })
   },
   mounted() {
-    this.$store.dispatch('debate/get_debates').catch((error) => {
+    this.$store.dispatch('debates/get_debates').catch((error) => {
       this.errorMsg = 'Ups! No podemos comunicarnos el servidor. ' + error
     })
   },
   methods: {
     resend() {
-      auth.currentUser.sendEmailVerification()
+      this.$store.dispatch('users/resend_email_verification')
     }
   }
 }

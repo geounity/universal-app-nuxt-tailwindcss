@@ -37,8 +37,8 @@
                 .border-t-2.border-gray-200.py-1
                   a(href="#" @click="logout" class="block w-full px-6 py-3 text-left leading-tight hover:bg-gray-200") Cerrar sesión
         div(v-else).flex.text-sm
-          nuxt-link(to="/auth/signin" class="border border-gray-400 bg-gray-200 font-semibold p-2 ml-2 leading-none rounded text-sm md:text-sm lg:text-lg text-teal-500 hover:border-transparent hover:bg-gray-400") Iniciar sesión
-          nuxt-link(to="/auth/signup" class="border border-teal-600 bg-teal-500 p-2 ml-2 text-gray-100 font-semibold leading-none rounded text-sm md:text-sm lg:text-lg hover:border-transver:bg-teal parent h-600") Registrarse
+          nuxt-link(to="/auth/signin" class="border border-gray-400 bg-gray-200 p-2 ml-2 font-semibold leading-none rounded text-sm text-teal-500 md:text-sm lg:px-5 lg:text-lg hover:border-transparent hover:bg-gray-400") Iniciar sesión
+          nuxt-link(to="/auth/signup" class="border border-teal-600 bg-teal-500 p-2 ml-2 font-semibold leading-none rounded text-sm text-gray-100 md:text-sm lg:px-5 lg:text-lg hover:border-transparent hover:bg-teal-600") Registrarse
 </template>
 
 <script>

@@ -15,7 +15,7 @@ export default {
     }
   },
   created() {
-    console.log(this.$route.params)
+    console.log('kkkkk', this.$route.params)
   }
 }
 </script>

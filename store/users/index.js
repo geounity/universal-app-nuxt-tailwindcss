@@ -1,6 +1,5 @@
 import Cookie from 'js-cookie'
 import { Auth, auth, firestore, storage } from '~/services/firebase'
-import api from '~/services/apiMongo'
 auth.useDeviceLanguage()
 
 export const state = () => ({
@@ -157,7 +156,7 @@ export const actions = {
         service: user.service || ''
       }
       const doc = await firestore.collection('users').add(newUser)
-      await api.post('/user', {
+      await this.$axios.post('/user', {
         ...newUser,
         id_doc_firestore: doc.id
       })
@@ -169,7 +168,7 @@ export const actions = {
 
   async update_info_user({ state, commit, getters }, userInfo) {
     try {
-      await api.patch('/user', {
+      await this.$axios.patch('/user', {
         username: getters.username,
         payload: userInfo
       })
@@ -192,14 +191,14 @@ export const actions = {
           email: user.email,
           email_verified: user.emailVerified
         }
-        api.get(`/user/username/${dataUser.email}`).then((user) => {
+        this.$axios.$get(`/user/username/${dataUser.email}`).then((data) => {
           commit('SET_USER', {
-            username: user.data.body.username,
-            name: user.data.body.name,
-            lastname: user.data.body.lastname,
-            photoURL: user.data.body.photo,
-            service: user.data.body.service,
-            id_doc_firestore: user.data.body.id_doc_firestore,
+            username: data.body.username,
+            name: data.body.name,
+            lastname: data.body.lastname,
+            photoURL: data.body.photo,
+            service: data.body.service,
+            id_doc_firestore: data.body.id_doc_firestore,
             ...dataUser
           })
         })

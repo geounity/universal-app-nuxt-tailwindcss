@@ -5,8 +5,11 @@
         h1(class="md:text-4xl lg:text-5xl xl:text-6xl").text-3xl.font-black.my-2 Mediación Digital
         ul
           li: h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.pb-2 Debates entre comunidades y personas.
-          li: h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.pb-2 Puntos de vistas entre partidos políticos.
-          li: h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.pb-2 Comparte tu perspectiva única con todos.
+          li: h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.pb-2 Opiniones entre naciones, provincias y municipios.
+          li: h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.pb-2 Puntos de vistas entre naciones, provincias y municipios.
+          li
+            h2(class="md:text-lg lg:text-xl xl:text-2xl").text-md.font-hairline.pb-2
+            i Comparte tu perspectiva única con todos.
         figure.flex.justify-between
           img(src="/debate.svg" alt="debate" class="lg:h-40").h-20.mt-10.mx-auto
           img(src="/analyze.svg" alt="analyze" class="lg:h-40").h-20.mt-10.mx-auto
@@ -54,14 +57,6 @@ export default {
   @apply min-h-screen flex justify-center items-center text-center mx-auto;
 }
 */
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  text-align: center;
-}
 .presentation {
   /* heropatterns */
   background-color: #55525a;

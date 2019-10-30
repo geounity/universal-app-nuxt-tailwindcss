@@ -26,6 +26,7 @@
         :public="debate.public"
         :title="debate.title"
         :description="debate.description"
+        :images="debate.images"
         :author="debate.author"
         :date="debate.createdAt"
         :type="debate.type"

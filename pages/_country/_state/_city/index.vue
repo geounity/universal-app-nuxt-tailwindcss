@@ -12,7 +12,7 @@ export default {
     }
   },
   created() {
-    console.log(this.$route.params)
+    console.log('aaaa', this.$route.params)
   }
 }
 </script>

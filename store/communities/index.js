@@ -1,5 +1,3 @@
-import api from '~/services/apiMongo'
-
 // Level 1: Global
 // Level 2: Continents
 // Level 3: Countries
@@ -63,8 +61,8 @@ export const mutations = {
 
 export const actions = {
   update_continent: ({ commit }, continent) => {
-    api.get(`/geocommunities/${continent}/countries`).then((res) => {
-      const countries = res.data.body.map((item) => ({
+    this.$axios.$get(`/geocommunities/${continent}/countries`).then((data) => {
+      const countries = data.body.map((item) => ({
         label: item.name,
         divisionName: item.division_name,
         population: item.population,
@@ -83,8 +81,8 @@ export const actions = {
     })
   },
   update_country: ({ commit }, country) => {
-    api.get(`/geocommunities/${country}/states`).then((res) => {
-      const states = res.data.body.map((item) => ({
+    this.$axios.$get(`/geocommunities/${country}/states`).then((data) => {
+      const states = data.body.map((item) => ({
         label: item.name,
         uuid: item.uuid
       }))
@@ -101,21 +99,23 @@ export const actions = {
     })
   },
   update_states: ({ commit }, country, state) => {
-    api.get(`/geocommunities/${country}/${state}/cities`).then((res) => {
-      const cities = res.data.body.map((item) => ({
-        label: item.name,
-        uuid: item.uuid
-      }))
-      const payload = {
-        name: state,
-        divisionName: 'cities',
-        items: cities,
-        polls: [],
-        statics: [],
-        debates: [],
-        aims: []
-      }
-      commit('UPDATE_STATE', payload)
-    })
+    this.$axios
+      .get(`/geocommunities/${country}/${state}/cities`)
+      .then((data) => {
+        const cities = data.body.map((item) => ({
+          label: item.name,
+          uuid: item.uuid
+        }))
+        const payload = {
+          name: state,
+          divisionName: 'cities',
+          items: cities,
+          polls: [],
+          statics: [],
+          debates: [],
+          aims: []
+        }
+        commit('UPDATE_STATE', payload)
+      })
   }
 }

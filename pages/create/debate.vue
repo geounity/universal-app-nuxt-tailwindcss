@@ -90,13 +90,13 @@
         p.inline-block.text-gray-600.mt-1 Es la cantidad de caracteres que cada usuario podrá usar para opinar.
       .mt-5
         h3.w-full.block.text-gray-700.text-md.font-bold.mb-1 Categoría
-        input(type="radio" v-model="form.type" id="r1" name="categoty" value="geographic")
+        input(type="radio" v-model="form.type" id="r1" name="categoty" value="geopolitics")
         label(for="r1").font-bold.ml-2.text-gray-800.text-md Regional: #[i.text-gray-600.text-xs Participarán las subcomunidades internas]
         <br/>
-        input(type="radio" v-model="form.type" id="r2" name="categoty" value="politic")
+        input(type="radio" v-model="form.type" id="r2" name="categoty" value="ideologics")
         label(for="r2").font-bold.ml-2.text-gray-800.text-md Política: #[i.text-gray-600.text-xs Participarán los partídos políticos de la comunidad]
         <br/>
-        input(type="radio" v-model="form.type" id="r3" name="categoty" value="religion")
+        input(type="radio" v-model="form.type" id="r3" name="categoty" value="bussines")
         label(for="r3").font-bold.ml-2.text-gray-800.text-md Religión: #[i.text-gray-600.text-xs Participarán las religiones de la comunidad]
       .mt-4.h-16
         strong {{form.public?'Publico':'Privado'}}
@@ -112,7 +112,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import api from '~/services/apiMongo'
 import { storage } from '~/services/firebase'
 export default {
   name: 'CreateDebate',
@@ -165,9 +164,9 @@ export default {
   },
   // Para traer los continentes
   async mounted() {
-    const uuid = await api.get('/geocommunities/global/uuid')
-    this.form.geopolitic_uuid = uuid.data.body
-    const { data } = await api.get('/geocommunities/continents')
+    const uuid = await this.$axios.$get('/geocommunities/global/uuid')
+    this.form.geopolitic_uuid = uuid.body
+    const data = await this.$axios.$get('/geocommunities/continents')
     this.continents = data.body.map((item) => {
       return {
         label: item.name,
@@ -202,7 +201,9 @@ export default {
       this.form.geopolitic_uuid = value.uuid
       const continent = value.label
       this.disabledCountries = false
-      const { data } = await api.get(`/geocommunities/${continent}/countries`)
+      const data = await this.$axios.$get(
+        `/geocommunities/${continent}/countries`
+      )
       this.countries = data.body.map((item) => {
         return {
           label: item.name,
@@ -214,7 +215,7 @@ export default {
       this.form.geopolitic_uuid = value.uuid
       const country = value.label
       this.hiddenStates = false
-      const { data } = await api.get(`/geocommunities/${country}/states`)
+      const data = await this.$axios.$get(`/geocommunities/${country}/states`)
       this.states = data.body.map((item) => {
         return {
           label: item.name,

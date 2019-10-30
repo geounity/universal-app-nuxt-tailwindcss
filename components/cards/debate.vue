@@ -1,8 +1,8 @@
 <template lang="pug">
   .max-w-sm.mx-auto.my-4.overflow-hidden.rounded.shadow-lg(class="sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl")
-    img(src="/img/card.jpg" alt="Imagen del debate").h-auto.w-full
+    img(:src="images?images:'/img/card.jpg'" alt="Imagen del debate").h-auto.w-full
     .px-2.pt-4
-      nuxt-link(:to="`${community}/debate/${id}`")
+      nuxt-link(:to="`/debate/${id}`")
         .font-bold.mb-2.text-xl(class="md:text-2xl xl:text-3xl") {{ title }}
         p.mb-4.text-sm.text-gray-700(class="md:text-md xl:text-lg") {{ description }}
       .flex.items-center.justify-between.mb-2
@@ -29,6 +29,7 @@ export default {
     public: { type: Boolean, default: true },
     title: { type: String, required: true },
     description: { type: String, required: false, default: '' },
+    images: { type: Array, requried: false, default: () => [] },
     author: { type: Object, required: true },
     date: { type: String, required: true },
     type: { type: String, required: true },

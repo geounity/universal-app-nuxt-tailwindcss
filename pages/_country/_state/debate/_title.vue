@@ -12,9 +12,6 @@ export default {
       state: this.$route.params.state,
       title: this.$route.params.title
     }
-  },
-  created() {
-    console.log(this.$route.params)
   }
 }
 </script>

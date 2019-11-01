@@ -8,9 +8,6 @@ export default {
     return {
       slug: this.$route.params.country
     }
-  },
-  created() {
-    console.log(this.$route.params)
   }
 }
 </script>

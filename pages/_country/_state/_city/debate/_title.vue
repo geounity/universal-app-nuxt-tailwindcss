@@ -13,9 +13,6 @@ export default {
       city: this.$route.params.state,
       title: this.$route.params.title
     }
-  },
-  created() {
-    console.log('kkkkk', this.$route.params)
   }
 }
 </script>

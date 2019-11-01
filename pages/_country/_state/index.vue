@@ -9,9 +9,6 @@ export default {
       country: this.$route.params.country,
       state: this.$route.params.state
     }
-  },
-  created() {
-    console.log(this.$route.params)
   }
 }
 </script>

@@ -11,9 +11,6 @@ export default {
       place: this.$route.params.country,
       title: this.$route.params.title
     }
-  },
-  created() {
-    console.log(this.$route.params)
   }
 }
 </script>

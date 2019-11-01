@@ -10,9 +10,6 @@ export default {
       state: this.$route.params.state,
       city: this.$route.params.city
     }
-  },
-  created() {
-    console.log('aaaa', this.$route.params)
   }
 }
 </script>

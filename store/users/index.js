@@ -191,17 +191,7 @@ export const actions = {
           email: user.email,
           email_verified: user.emailVerified
         }
-        this.$axios.$get(`/user/username/${dataUser.email}`).then((data) => {
-          commit('SET_USER', {
-            username: data.body.username,
-            name: data.body.name,
-            lastname: data.body.lastname,
-            photoURL: data.body.photo,
-            service: data.body.service,
-            id_doc_firestore: data.body.id_doc_firestore,
-            ...dataUser
-          })
-        })
+        Cookie.set('access_token', user.ma)
         commit('SET_USER', dataUser)
       }
     })

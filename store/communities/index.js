@@ -56,11 +56,14 @@ export const mutations = {
   },
   UPDATE_COUNTRY: (state, payload = {}) => {
     state.geopolitics = [...state.geopolitics.slice(0, 2), payload]
+  },
+  UPDATE_STATE: (state, payload = {}) => {
+    state.geopolitics = [...state.geopolitics.slice(0, 3), payload]
   }
 }
 
 export const actions = {
-  update_continent: ({ commit }, continent) => {
+  update_continent({ commit }, continent) {
     this.$axios.$get(`/geocommunities/${continent}/countries`).then((data) => {
       const countries = data.body.map((item) => ({
         label: item.name,
@@ -80,7 +83,7 @@ export const actions = {
       commit('UPDATE_CONTINENT', payload)
     })
   },
-  update_country: ({ commit }, country) => {
+  update_country({ commit }, country) {
     this.$axios.$get(`/geocommunities/${country}/states`).then((data) => {
       const states = data.body.map((item) => ({
         label: item.name,
@@ -98,9 +101,10 @@ export const actions = {
       commit('UPDATE_COUNTRY', payload)
     })
   },
-  update_states: ({ commit }, country, state) => {
+  update_state({ commit }, payload) {
+    const { country, state } = payload
     this.$axios
-      .get(`/geocommunities/${country}/${state}/cities`)
+      .$get(`/geocommunities/${country}/${state}/cities`)
       .then((data) => {
         const cities = data.body.map((item) => ({
           label: item.name,
@@ -108,7 +112,7 @@ export const actions = {
         }))
         const payload = {
           name: state,
-          divisionName: 'cities',
+          divisionName: 'Cities',
           items: cities,
           polls: [],
           statics: [],

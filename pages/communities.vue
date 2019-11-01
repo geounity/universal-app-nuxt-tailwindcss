@@ -21,7 +21,8 @@ export default {
   name: 'CommunitiesPage',
   components: { Breadcrumbs },
   data: () => ({
-    onFocus: ''
+    onFocus: '',
+    selectedCountry: ''
   }),
   computed: {
     ...mapGetters({
@@ -39,9 +40,13 @@ export default {
           break
         case 1:
           this.$store.dispatch('communities/update_country', value.label)
+          this.selectedCountry = value.label
           break
         case 2:
-          this.$store.dispatch('communities/update_state', value)
+          this.$store.dispatch('communities/update_state', {
+            country: this.selectedCountry,
+            state: value.label
+          })
           break
       }
     }

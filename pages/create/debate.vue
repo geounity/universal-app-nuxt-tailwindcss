@@ -22,12 +22,12 @@
           placeholder="Una descripción del problema. Se objetivo. Luego de abrir el debate podrás dar tu punto de vista."
         )
       .mt-4
+        figure(v-if="form.fileUrl.length>0")
+          img(:src="form.fileUrl").h-32.w-auto
         label.block.text-gray-700.text-md.font-bold.mb-1(for="file") Imagenes
         button(type="button" @click.prevent="selectFile").inline-block.bg-blue-500.rounded.text-sm.text-white.font-bold.px-4.py-2.mr-2 Agregar imagen
         p.inline-block.text-gray-600 Por el momento solo podrá agregar una imagen.
         input(id="file" type="file" name="file" :multiple="false" ref="uploadInput" accept="image/*" @change="detectFile($event)").absolute.invisible
-        figure(v-if="images")
-          img(:src="images").h-32.w-auto
       .mt-6.flex.flex-wrap
         label.w-full.block.text-gray-700.text-md.font-bold(for="description") Comunidad que participará
         p.w-full.inline-block.text-gray-600.mb-1 Puede seleccionar las subcomunidades que desee.
@@ -53,7 +53,11 @@
             :options="countries"
             @input="selectedCountry"
           )
-            //- option(v-for="country in countries" :key="country") {{country}}
+            //- option(v-for="country in countries" :key="country
+    selectedState(value) {
+      this.form.geopolitic_uuid = value.uuid
+      const state = value.label
+      
         //- States
         div(class="w-1/2 md:w-1/3 lg:w-1/4").px-2
           label.block.text-gray-700.text-sm.font-bold.mb-1(for="description") Provincias
@@ -132,6 +136,7 @@ export default {
       type: '',
       public: true
     },
+    selectCountry: '',
     error: '',
     loading: false,
     progressUpload: 0,
@@ -214,6 +219,7 @@ export default {
     async selectedCountry(value) {
       this.form.geopolitic_uuid = value.uuid
       const country = value.label
+      this.selectCountry = value.label
       this.hiddenStates = false
       const data = await this.$axios.$get(`/geocommunities/${country}/states`)
       this.states = data.body.map((item) => {
@@ -222,9 +228,6 @@ export default {
           uuid: item.uuid
         }
       })
-    },
-    selectedState(value) {
-      this.form.geopolitic_uuid = value.uuid
     },
     openDebate(e) {
       e.preventDefault()

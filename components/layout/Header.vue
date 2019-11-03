@@ -4,13 +4,13 @@
       nuxt-link(to="/"): span.font-semibold.text-xl.tracking-tight Geounity
       div(class="md:items-center md:w-auto").flex
         div(class="md:flex").font-bold.hidden
-          nuxt-link(to="/statics" class="block md:text-white mr-4") Estadísticas
-          nuxt-link(to="/debates" class="block md:text-white mr-4") Debates
-          nuxt-link(to="/aims" class="block md:text-white mr-4") Propuestas
-          nuxt-link(to="/communities" class="block md:text-white mr-4") Comunidades
+          nuxt-link(to="/statics" class="block md:text-white hover:bg-purple-600 px-2 rounded") Estadísticas
+          nuxt-link(to="/debates" class="block md:text-white hover:bg-purple-600 px-2 rounded") Debates
+          nuxt-link(to="/aims" class="block md:text-white hover:bg-purple-600 px-2 rounded") Propuestas
+          nuxt-link(to="/communities" class="block md:text-white hover:bg-purple-600 px-2 rounded") Comunidades
         
         .relative.inline-block.text-gray-700(v-if="isAuth")
-          button(:class="{'bg-gray-300': menuIsOpen }" @click="menuIsOpen=!menuIsOpen" class="hover:bg-gray-700 focus:outline-none focus:bg-gray-700").inline-flex.items-center.pl-6.pr-2.py-2.font-semibold.text-white.bg-gray-800.rounded-lg
+          button(:class="{'bg-gray-300': menuIsOpen }" @click="menuIsOpen=!menuIsOpen" class="hover:bg-gray-700 focus:outline-none focus:bg-gray-700").inline-flex.items-center.ml-2.pl-6.pr-2.py-2.font-semibold.text-white.bg-gray-800.rounded-lg
             | Ego
             <svg class="ml-2 h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24">
               <path d="M15.3 9.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l3.3 3.29 3.3-3.3z"/>

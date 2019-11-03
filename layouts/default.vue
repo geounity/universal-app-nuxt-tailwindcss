@@ -3,7 +3,7 @@
     Header
     main.min-h-screen
       nuxt
-    Footer
+    Footer.hidden
     BottomNav
 </template>
 

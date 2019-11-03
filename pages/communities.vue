@@ -1,5 +1,5 @@
 <template lang="pug">
-  .h-screen
+  .h-screen.mt-8
     Breadcrumbs(isPageCommunities=true)
     main.mt-10
       h2.text-3xl.text-center.w-full Selecciona tu comunidad

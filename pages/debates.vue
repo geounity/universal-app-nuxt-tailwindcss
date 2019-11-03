@@ -1,14 +1,11 @@
 <template lang="pug">
-  .h-screen
-    Breadcrumbs
+  .h-screen.mt-8
     div(v-if="isAuth").text-center
-      div(v-if="isVerified")
-        nuxt-link(to="/create/debate" tag="button" class="hover:bg-teal-600").border-b-2.border-teal-600.bg-teal-500.text-white.font-bold.mt-5.py-2.px-4.rounded.w-64 Abrir un debate
-      div(v-else)
-        div(role="alert").bg-yellow-200.border-l-4.border-yellow-600.text-left.text-yellow-900.p-4.mx-4
-          p.font-bold Debemos verificar su correo
-          p Le hemos enviado un correo de confirmación
-          button(type="button" @click="resend") Enviar de nuevo
+      div(v-if="!isVerified")
+        AlertVerifyEmail
+    Breadcrumbs
+    div(v-if="isAuth && isVerified").text-center
+      nuxt-link(to="/create/debate" tag="button" class="hover:bg-teal-600").border-b-2.border-teal-600.bg-teal-500.text-white.font-bold.mt-5.py-2.px-4.rounded.w-64 Abrir un debate
     div(v-if="!debates || debates.length === 0").mt-10
       h1.text-2xl.text-center.px-2 No hay debates en esta comunidad
     div(v-if="!isAuth").my-10
@@ -38,11 +35,12 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import AlertVerifyEmail from '~/components/alerts/VerifyEmail'
 import Breadcrumbs from '~/components/utils/Breadcrumbs'
 import CardDebate from '~/components/cards/debate'
 export default {
   name: 'DebatesPage',
-  components: { CardDebate, Breadcrumbs },
+  components: { AlertVerifyEmail, Breadcrumbs, CardDebate },
   data() {
     return {
       errorMsg: ''

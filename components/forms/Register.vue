@@ -5,23 +5,23 @@
       .mb-1
         label.block.text-gray-700.text-sm.font-bold.mb-1(for='username')
           | Nombre de usuario
-        input#username.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(v-model="form.username" @input="handleInputUsername" class='focus:outline-none focus:shadow-outline' :class="{allowedOutline: allowedUsername}" type='text' placeholder='Username' maxlength="15")
+        input#username.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(v-model="form.username" @input="handleInputUsername" @focus="error=false" class='focus:outline-none focus:shadow-outline' :class="{allowedOutline: allowedUsername}" type='text' placeholder='Username' maxlength="15")
         span.text-left.text-gray-600.text-xs(:class="{allowed: allowedUsername}") {{charsUsername}}/15
       .mb-4
         label.block.text-gray-700.text-sm.font-bold.mb-1(for='email')
           | Correo electrónico
-        input#email.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(v-model="form.email" @input="handleInputEmail" class='focus:outline-none focus:shadow-outline' :class="{allowedOutline: allowedEmail}" type='email' placeholder='email@example.com')
+        input#email.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(v-model="form.email" @input="handleInputEmail" @focus="error=false" class='focus:outline-none focus:shadow-outline' :class="{allowedOutline: allowedEmail}" type='email' placeholder='email@example.com')
       .mb-2
         label.block.text-gray-700.text-sm.font-bold.mb-1(for='password')
           | Contraseña
-        input#password.shadow.appearance-none.border.border.rounded.w-full.py-2.px-3.text-gray-700.mb-3.leading-tight(v-model="form.password" @input="handleInputPass" class='focus:outline-none focus:shadow-outline' :class="{allowedOutline: allowedPassword}" type='password' placeholder='******************')
+        input#password.shadow.appearance-none.border.border.rounded.w-full.py-2.px-3.text-gray-700.mb-3.leading-tight(v-model="form.password" @input="handleInputPass" @focus="error=false" class='focus:outline-none focus:shadow-outline' :class="{allowedOutline: allowedPassword}" type='password' placeholder='******************')
       .mb-4
         label(class="block text-gray-500 font-bold").text-left
           input.mr-2.leading-tight(type="checkbox" v-model="form.checkbox")
           span.text-sm Acepto los terminos y condiciones.
       .mb-4.bg-red-300.border-l-4.border-red-700.text-red-800.text-left.p-4(v-if="error" role="alert")
-        p.font-bold.text-sm {{ errorMsg }}
         p {{ errorCode }}
+        p.font-bold.text-sm {{ errorMsg }}
       p.text-red-800 {{ errorVuex }}
       div
         button(@click="register" class='hover:bg-teal-600 focus:outline-none focus:shadow-outline' type='button').py-2.px-4.bg-teal-500.text-gray-100.font-bold.border-teal-600.rounded.w-full
@@ -70,28 +70,24 @@ export default {
   },
   methods: {
     authWithGoogle() {
-      this.$store
-        .dispatch('users/auth_google', { router: this.$router })
-        .catch((error) => {
-          this.error = true
-          this.errorCode = error.code
-          this.errorMsg = error.message
-          setTimeout(() => {
-            this.error = false
-          }, 10000)
-        })
+      this.$store.dispatch('users/auth_google').catch((error) => {
+        this.error = true
+        this.errorCode = error.code
+        this.errorMsg = error.message
+        setTimeout(() => {
+          this.error = false
+        }, 10000)
+      })
     },
     authWithFacebook() {
-      this.$store
-        .dispatch('users/auth_facebook', { router: this.$router })
-        .catch((error) => {
-          this.error = true
-          this.errorCode = error.code
-          this.errorMsg = error.message
-          setTimeout(() => {
-            this.error = false
-          }, 10000)
-        })
+      this.$store.dispatch('users/auth_facebook').catch((error) => {
+        this.error = true
+        this.errorCode = error.code
+        this.errorMsg = error.message
+        setTimeout(() => {
+          this.error = false
+        }, 10000)
+      })
     },
     handleInputEmail() {
       this.allowedEmail = this.validateEmail(this.form.email)
@@ -148,19 +144,15 @@ export default {
         this.allowedEmail &&
         this.allowedPassword
       ) {
-        this.$store
-          .dispatch('users/register', this.form)
-          .then(() => {
-            this.$router.push('/user/profile')
-          })
-          .catch((error) => {
-            this.error = true
-            this.errorCode = error.code
-            this.errorMsg = error.message
-            setTimeout(() => {
-              this.error = false
-            }, 10000)
-          })
+        this.$store.dispatch('users/register', this.form).catch((error) => {
+          if (error.code.match(/auth\/email-already-in-use/)) {
+            this.errorMsg = 'Intente con otro email por favor'
+          }
+          this.error = true
+          setTimeout(() => {
+            this.error = false
+          }, 10000)
+        })
       }
     },
     validateEmail(email) {

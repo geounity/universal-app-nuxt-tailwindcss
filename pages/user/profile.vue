@@ -11,7 +11,7 @@
         input(v-model="formInfo.username" @input="handleInputUsername" id="username" placeholder="Nombre de usuario" type="text" maxlength="15" class="focus:outline-none focus:shadow-outline").text-center.shadow.appearance-none.border.rounded.py-2.px-6.text-gray-700.text-2xl.w-64
         <br/>
         span.text-left.text-gray-600.text-xs(:class="{allowed: allowedUsername}") {{charsUsername}}/15
-      div(v-else).flex.flex-col.items-center.mt-4.px-2.text-center(class="lg:flex-row lg:flex-wrap lg:justify-around")
+      div(v-else class="lg:flex-row lg:flex-wrap lg:justify-around").flex.flex-col.items-center.mt-4.px-2.text-center
         div(class="lg:w-1/2").px-12
           //- Username
           h1.font-bold.text-5xl.my-2 {{ username }}

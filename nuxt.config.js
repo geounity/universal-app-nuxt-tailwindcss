@@ -58,7 +58,7 @@ module.exports = {
    */
   modules: ['@nuxtjs/axios', '@nuxtjs/pwa', 'nuxt-vue-select'],
   axios: {
-    baseURL: process.env.API_URL || 'http://localhost:8080'
+    baseURL: process.env.API_URL || 'https://geounity-api-node-postgres.herokuapp.com'
   },
   /*
    ** Build configuration

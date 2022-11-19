@@ -25,7 +25,7 @@
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
     "node-fetch": "^2.6.1",
-    "nuxt": "^2.10.2",
+    "nuxt": "^2.15.8",
     "nuxt-vue-select": "^0.1.4",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
